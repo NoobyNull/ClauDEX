@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"/data/Claude_Scholar/dist/src/hooks/adapters/hook-runner.js\" SessionStart"
+            "command": "node \"/data/ClauDEX/dist/src/hooks/adapters/hook-runner.js\" SessionStart"
           }
         ]
       }
@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"/data/Claude_Scholar/dist/src/hooks/adapters/hook-runner.js\" UserPromptSubmit"
+            "command": "node \"/data/ClauDEX/dist/src/hooks/adapters/hook-runner.js\" UserPromptSubmit"
           }
         ]
       }
@@ -27,7 +27,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"/data/Claude_Scholar/dist/src/hooks/adapters/hook-runner.js\" PostToolUse"
+            "command": "node \"/data/ClauDEX/dist/src/hooks/adapters/hook-runner.js\" PostToolUse"
           }
         ]
       }
@@ -38,7 +38,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"/data/Claude_Scholar/dist/src/hooks/adapters/hook-runner.js\" PreToolUse"
+            "command": "node \"/data/ClauDEX/dist/src/hooks/adapters/hook-runner.js\" PreToolUse"
           }
         ]
       }
@@ -48,7 +48,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"/data/Claude_Scholar/dist/src/hooks/adapters/hook-runner.js\" PreCompact"
+            "command": "node \"/data/ClauDEX/dist/src/hooks/adapters/hook-runner.js\" PreCompact"
           }
         ]
       }
@@ -58,7 +58,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"/data/Claude_Scholar/dist/src/hooks/adapters/hook-runner.js\" SessionEnd"
+            "command": "node \"/data/ClauDEX/dist/src/hooks/adapters/hook-runner.js\" SessionEnd"
           }
         ]
       }

@@ -135,12 +135,12 @@ async function main() {
     // ── PreToolUse ──────────────────────────────────────────────────
     case 'PreToolUse': {
       const config = getConfig();
-      if (config.checkpoints?.enabled && config.checkpoints?.autoForkBeforeDestructive) {
+      if (input.session_id && config.checkpoints?.enabled && config.checkpoints?.autoForkBeforeDestructive) {
         if (isDestructiveBash(input.tool_input)) {
           try {
             const { createCheckpoint } = await import('../../sdk/checkpoint.js');
             const cmd = String((input.tool_input as Record<string, unknown>)?.['command']).slice(0, 60);
-            await createCheckpoint(`auto-fork before: ${cmd}`);
+            await createCheckpoint(input.session_id, `auto-fork before: ${cmd}`);
             log.info('Auto-checkpoint before destructive Bash', { command: cmd });
           } catch (err) {
             log.warn('Auto-checkpoint failed', err);

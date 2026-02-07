@@ -160,11 +160,11 @@ export function createClaudexHooks(buffer?: ObservationBuffer): ClaudexHookCallb
         type: 'callback',
         callback: async (input: HookInput) => {
           const config = getConfig();
-          if (config.checkpoints?.enabled && config.checkpoints?.autoForkBeforeDestructive) {
+          if (input.session_id && config.checkpoints?.enabled && config.checkpoints?.autoForkBeforeDestructive) {
             if (isDestructiveBash(input.tool_input)) {
               try {
                 const { createCheckpoint } = await import('./checkpoint.js');
-                await createCheckpoint(`auto-fork before: ${String((input.tool_input as Record<string, unknown>)?.['command']).slice(0, 60)}`);
+                await createCheckpoint(input.session_id, `auto-fork before: ${String((input.tool_input as Record<string, unknown>)?.['command']).slice(0, 60)}`);
                 log.info('Auto-checkpoint before destructive Bash', { command: (input.tool_input as Record<string, unknown>)?.['command'] });
               } catch (err) {
                 log.warn('Auto-checkpoint failed', err);

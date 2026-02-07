@@ -1,7 +1,6 @@
 import { getDb } from '../../db/database.js';
-import { detectProjectRoot } from '../../projects/detector.js';
-import { getActiveSession } from '../../db/sessions.js';
-import { getProjectByPath } from '../../db/projects.js';
+import { getSessionByClaudeId } from '../../db/sessions.js';
+import { getProjectById } from '../../db/projects.js';
 import { handleTopicShift } from '../../conversations/grouper.js';
 import { createLogger } from '../../shared/logger.js';
 import type { HookInput } from '../../shared/types.js';
@@ -15,19 +14,17 @@ export interface UserPromptResult {
 
 export async function handleUserPrompt(input: HookInput): Promise<UserPromptResult> {
   const prompt = input.prompt || '';
-  const cwd = input.cwd || process.cwd();
 
-  if (!prompt) return { suggestion: null, action: 'ignore' };
+  if (!prompt || !input.session_id) return { suggestion: null, action: 'ignore' };
 
   // Initialize database
   getDb();
 
-  const projectRoot = detectProjectRoot(cwd);
-  const project = getProjectByPath(projectRoot);
-  if (!project) return { suggestion: null, action: 'ignore' };
-
-  const session = getActiveSession(project.id);
+  const session = getSessionByClaudeId(input.session_id);
   if (!session) return { suggestion: null, action: 'ignore' };
+
+  const project = getProjectById(session.project_id);
+  if (!project) return { suggestion: null, action: 'ignore' };
 
   try {
     const result = await handleTopicShift(session.id, project.root_path, project.id, prompt);

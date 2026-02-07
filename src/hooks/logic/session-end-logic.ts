@@ -1,7 +1,6 @@
 import { getDb } from '../../db/database.js';
-import { detectProjectRoot } from '../../projects/detector.js';
-import { getProjectByPath } from '../../db/projects.js';
-import { getActiveSession, endSession } from '../../db/sessions.js';
+import { getProjectById } from '../../db/projects.js';
+import { getSessionByClaudeId, endSession } from '../../db/sessions.js';
 import { getSessionConversations, completeConversation, stashConversation } from '../../db/conversations.js';
 import { getObservationsBySession } from '../../db/observations.js';
 import { summarizeConversation } from '../../conversations/summarizer.js';
@@ -19,17 +18,16 @@ export async function handleSessionEnd(
   input: HookInput,
   buffer?: ObservationBuffer,
 ): Promise<void> {
-  const cwd = input.cwd || process.cwd();
+  if (!input.session_id) return;
 
   // Initialize database
   getDb();
 
-  const projectRoot = detectProjectRoot(cwd);
-  const project = getProjectByPath(projectRoot);
-  if (!project) return;
-
-  const session = getActiveSession(project.id);
+  const session = getSessionByClaudeId(input.session_id);
   if (!session) return;
+
+  const project = getProjectById(session.project_id);
+  if (!project) return;
 
   // Run curation on buffer if available and enabled
   const config = getConfig();

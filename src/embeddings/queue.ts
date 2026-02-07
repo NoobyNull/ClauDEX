@@ -43,14 +43,25 @@ export async function processQueue(batchSize?: number): Promise<number> {
 
   const db = getDb();
 
-  // Fetch pending items
+  // Atomic claim: UPDATE first, then SELECT what we claimed.
+  // This prevents two processes from grabbing the same batch.
+  const claimToken = `processing_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+  db.prepare(`
+    UPDATE embedding_queue SET status = ?, error_message = NULL
+    WHERE id IN (
+      SELECT id FROM embedding_queue
+      WHERE status = 'pending'
+      ORDER BY created_at ASC
+      LIMIT ?
+    )
+  `).run(claimToken, effectiveBatchSize);
+
   const pendingItems = db.prepare(`
     SELECT id, source_type, source_id, text_content, status, error_message, created_at, processed_at
     FROM embedding_queue
-    WHERE status = 'pending'
+    WHERE status = ?
     ORDER BY created_at ASC
-    LIMIT ?
-  `).all(effectiveBatchSize) as EmbeddingQueueItem[];
+  `).all(claimToken) as EmbeddingQueueItem[];
 
   if (pendingItems.length === 0) {
     log.debug('No pending items in embedding queue');
@@ -58,13 +69,6 @@ export async function processQueue(batchSize?: number): Promise<number> {
   }
 
   log.info('Processing embedding queue', { count: pendingItems.length });
-
-  // Mark items as processing
-  const ids = pendingItems.map((item) => item.id);
-  const placeholders = ids.map(() => '?').join(',');
-  db.prepare(`
-    UPDATE embedding_queue SET status = 'processing' WHERE id IN (${placeholders})
-  `).run(...ids);
 
   // Generate embeddings
   const texts = pendingItems.map((item) => item.text_content);

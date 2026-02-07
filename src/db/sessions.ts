@@ -121,15 +121,6 @@ export function getRecentSessions(projectId: string, limit: number = 10): Sessio
   return rows.map(deserializeSession);
 }
 
-export function getActiveSession(projectId: string): Session | null {
-  const db = getDb();
-  const row = db.prepare(
-    'SELECT * FROM sessions WHERE project_id = ? AND ended_at IS NULL ORDER BY started_at DESC LIMIT 1'
-  ).get(projectId) as Record<string, unknown> | undefined;
-  if (!row) return null;
-  return deserializeSession(row);
-}
-
 function deserializeSession(row: Record<string, unknown>): Session {
   return {
     id: row['id'] as string,

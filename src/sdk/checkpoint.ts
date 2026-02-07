@@ -1,7 +1,7 @@
 import { getDb } from '../db/database.js';
 import { generateId } from '../db/database.js';
 import { createLogger } from '../shared/logger.js';
-import { getActiveSession } from '../db/sessions.js';
+import { getSessionByClaudeId } from '../db/sessions.js';
 import { getObservationsBySession } from '../db/observations.js';
 import { getSessionConversations } from '../db/conversations.js';
 import type { SessionFork } from '../shared/types.js';
@@ -11,21 +11,20 @@ const log = createLogger('sdk:checkpoint');
 /**
  * Create a checkpoint (session fork) — a snapshot of the current session state.
  * Used for recovery, branching, and destructive-operation safety.
+ *
+ * @param claudeSessionId — the Claude CLI session ID to resolve to a ClauDEX session.
+ * @param label — optional human-readable label for this checkpoint.
  */
-export async function createCheckpoint(label?: string): Promise<SessionFork | null> {
+export async function createCheckpoint(claudeSessionId: string, label?: string): Promise<SessionFork | null> {
   const db = getDb();
 
-  // Find the currently active session (across all projects)
-  const activeRow = db.prepare(
-    'SELECT id, project_id FROM sessions WHERE ended_at IS NULL ORDER BY started_at DESC LIMIT 1'
-  ).get() as { id: string; project_id: string } | undefined;
-
-  if (!activeRow) {
-    log.warn('No active session for checkpoint');
+  const session = getSessionByClaudeId(claudeSessionId);
+  if (!session) {
+    log.warn('No session found for checkpoint', { claudeSessionId });
     return null;
   }
 
-  const sessionId = activeRow.id;
+  const sessionId = session.id;
   const observations = getObservationsBySession(sessionId);
   const conversations = getSessionConversations(sessionId);
 

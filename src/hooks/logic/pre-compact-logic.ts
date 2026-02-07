@@ -1,7 +1,6 @@
 import { getDb } from '../../db/database.js';
-import { detectProjectRoot } from '../../projects/detector.js';
-import { getProjectByPath } from '../../db/projects.js';
-import { getActiveSession } from '../../db/sessions.js';
+import { getSessionByClaudeId } from '../../db/sessions.js';
+import { getProjectById } from '../../db/projects.js';
 import { getActiveConversation } from '../../db/conversations.js';
 import { journaledInsertObservation } from '../../recovery/journal.js';
 import { createLogger } from '../../shared/logger.js';
@@ -10,17 +9,16 @@ import type { HookInput } from '../../shared/types.js';
 const log = createLogger('hook:pre-compact');
 
 export async function handlePreCompact(input: HookInput): Promise<void> {
-  const cwd = input.cwd || process.cwd();
+  if (!input.session_id) return;
 
   // Initialize database
   getDb();
 
-  const projectRoot = detectProjectRoot(cwd);
-  const project = getProjectByPath(projectRoot);
-  if (!project) return;
-
-  const session = getActiveSession(project.id);
+  const session = getSessionByClaudeId(input.session_id);
   if (!session) return;
+
+  const project = getProjectById(session.project_id);
+  if (!project) return;
 
   const conversation = getActiveConversation(session.id);
 

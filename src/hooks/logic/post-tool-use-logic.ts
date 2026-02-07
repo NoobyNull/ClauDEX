@@ -1,7 +1,6 @@
 import { getDb } from '../../db/database.js';
-import { detectProjectRoot } from '../../projects/detector.js';
-import { getProjectByPath, incrementProjectObservationCount } from '../../db/projects.js';
-import { getActiveSession, incrementSessionObservationCount } from '../../db/sessions.js';
+import { getProjectById, incrementProjectObservationCount } from '../../db/projects.js';
+import { getSessionByClaudeId, incrementSessionObservationCount } from '../../db/sessions.js';
 import { getActiveConversation, incrementConversationObservationCount } from '../../db/conversations.js';
 import { journaledInsertObservation } from '../../recovery/journal.js';
 import { enqueueEmbedding } from '../../embeddings/queue.js';
@@ -20,19 +19,17 @@ export async function handlePostToolUse(
   const toolName = input.tool_name || '';
   const toolInput = input.tool_input;
   const toolResponse = input.tool_response || '';
-  const cwd = input.cwd || process.cwd();
 
-  if (!toolName) return null;
+  if (!toolName || !input.session_id) return null;
 
   // Initialize database
   getDb();
 
-  const projectRoot = detectProjectRoot(cwd);
-  const project = getProjectByPath(projectRoot);
-  if (!project) return null;
-
-  const session = getActiveSession(project.id);
+  const session = getSessionByClaudeId(input.session_id);
   if (!session) return null;
+
+  const project = getProjectById(session.project_id);
+  if (!project) return null;
 
   const conversation = getActiveConversation(session.id);
 

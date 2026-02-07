@@ -10,7 +10,7 @@
       "name": "claudex",
       "source": "./plugin",
       "description": "Persistent memory for Claude Code — captures observations, saves knowledge, enables search across sessions.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "NoobyNull"
       },

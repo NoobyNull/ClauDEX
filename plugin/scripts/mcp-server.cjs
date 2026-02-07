@@ -2984,7 +2984,7 @@ var require_compile = __commonJS({
       const schOrFunc = root.refs[ref];
       if (schOrFunc)
         return schOrFunc;
-      let _sch = resolve.call(this, root, ref);
+      let _sch = resolve2.call(this, root, ref);
       if (_sch === void 0) {
         const schema = (_a = root.localRefs) === null || _a === void 0 ? void 0 : _a[ref];
         const { schemaId } = this.opts;
@@ -3011,7 +3011,7 @@ var require_compile = __commonJS({
     function sameSchemaEnv(s1, s2) {
       return s1.schema === s2.schema && s1.root === s2.root && s1.baseId === s2.baseId;
     }
-    function resolve(root, ref) {
+    function resolve2(root, ref) {
       let sch;
       while (typeof (sch = this.refs[ref]) == "string")
         ref = sch;
@@ -3586,7 +3586,7 @@ var require_fast_uri = __commonJS({
       }
       return uri;
     }
-    function resolve(baseURI, relativeURI, options) {
+    function resolve2(baseURI, relativeURI, options) {
       const schemelessOptions = options ? Object.assign({ scheme: "null" }, options) : { scheme: "null" };
       const resolved = resolveComponent(parse3(baseURI, schemelessOptions), parse3(relativeURI, schemelessOptions), schemelessOptions, true);
       schemelessOptions.skipEscape = true;
@@ -3813,7 +3813,7 @@ var require_fast_uri = __commonJS({
     var fastUri = {
       SCHEMES,
       normalize,
-      resolve,
+      resolve: resolve2,
       resolveComponent,
       equal,
       serialize,
@@ -6944,10 +6944,16 @@ function formatMessage(level, component, message, data) {
   }
   return base;
 }
-function writeLog(formatted) {
+function writeLog(formatted, toStderr = false) {
   try {
     import_node_fs2.default.appendFileSync(getLogFile(), formatted + "\n");
   } catch {
+  }
+  if (toStderr) {
+    try {
+      process.stderr.write(formatted + "\n");
+    } catch {
+    }
   }
 }
 function createLogger(component) {
@@ -6964,12 +6970,12 @@ function createLogger(component) {
     },
     warn(message, data) {
       if (LEVELS[logLevel] <= LEVELS.warn) {
-        writeLog(formatMessage("warn", component, message, data));
+        writeLog(formatMessage("warn", component, message, data), true);
       }
     },
     error(message, data) {
       if (LEVELS[logLevel] <= LEVELS.error) {
-        writeLog(formatMessage("error", component, message, data));
+        writeLog(formatMessage("error", component, message, data), true);
       }
     }
   };
@@ -7404,17 +7410,20 @@ function generateId(prefix = "sch") {
   const rand = Math.random().toString(36).substring(2, 8);
   return `${prefix}_${ts}_${rand}`;
 }
-var import_better_sqlite3, import_node_module, log2, _require, dbInstance, vectorsAvailable;
+var import_better_sqlite3, import_node_module, import_node_url, import_meta, log2, _filename, _require, dbInstance, vectorsAvailable;
 var init_database = __esm({
   "src/db/database.ts"() {
     "use strict";
     import_better_sqlite3 = __toESM(require("better-sqlite3"), 1);
     import_node_module = require("node:module");
+    import_node_url = require("node:url");
     init_config();
     init_logger();
     init_schema();
+    import_meta = {};
     log2 = createLogger("database");
-    _require = (0, import_node_module.createRequire)(`file://${__filename}`);
+    _filename = typeof __filename !== "undefined" ? __filename : (0, import_node_url.fileURLToPath)(import_meta.url);
+    _require = (0, import_node_module.createRequire)(`file://${_filename}`);
     dbInstance = null;
     vectorsAvailable = false;
   }
@@ -8354,7 +8363,11 @@ function inferRelationship(newKn, existing) {
 }
 async function tryImportSdk() {
   try {
-    const mod = await import("@anthropic-ai/claude-code");
+    const moduleName = "@anthropic-ai/claude-code";
+    const mod = await import(
+      /* webpackIgnore: true */
+      moduleName
+    );
     if (mod && typeof mod.query === "function") {
       return mod;
     }
@@ -9112,10 +9125,10 @@ async function handleApiRequest(req, res) {
   sendError(res, "Not found", 404);
 }
 function readBody(req) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve2, reject) => {
     const chunks = [];
     req.on("data", (chunk) => chunks.push(chunk));
-    req.on("end", () => resolve(Buffer.concat(chunks).toString()));
+    req.on("end", () => resolve2(Buffer.concat(chunks).toString()));
     req.on("error", reject);
   });
 }
@@ -9241,6 +9254,11 @@ var init_server = __esm({
     };
   }
 });
+
+// src/mcp/stdio-server.ts
+var import_node_fs6 = require("node:fs");
+var import_node_url2 = require("node:url");
+var import_node_path5 = require("node:path");
 
 // node_modules/zod/v4/core/core.js
 var NEVER = Object.freeze({
@@ -15063,7 +15081,7 @@ var Protocol = class {
           return;
         }
         const pollInterval = task2.pollInterval ?? this._options?.defaultTaskPollInterval ?? 1e3;
-        await new Promise((resolve) => setTimeout(resolve, pollInterval));
+        await new Promise((resolve2) => setTimeout(resolve2, pollInterval));
         options?.signal?.throwIfAborted();
       }
     } catch (error2) {
@@ -15080,7 +15098,7 @@ var Protocol = class {
    */
   request(request, resultSchema, options) {
     const { relatedRequestId, resumptionToken, onresumptiontoken, task, relatedTask } = options ?? {};
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve2, reject) => {
       const earlyReject = (error2) => {
         reject(error2);
       };
@@ -15158,7 +15176,7 @@ var Protocol = class {
           if (!parseResult.success) {
             reject(parseResult.error);
           } else {
-            resolve(parseResult.data);
+            resolve2(parseResult.data);
           }
         } catch (error2) {
           reject(error2);
@@ -15419,12 +15437,12 @@ var Protocol = class {
       }
     } catch {
     }
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve2, reject) => {
       if (signal.aborted) {
         reject(new McpError(ErrorCode.InvalidRequest, "Request cancelled"));
         return;
       }
-      const timeoutId = setTimeout(resolve, interval);
+      const timeoutId = setTimeout(resolve2, interval);
       signal.addEventListener("abort", () => {
         clearTimeout(timeoutId);
         reject(new McpError(ErrorCode.InvalidRequest, "Request cancelled"));
@@ -16153,12 +16171,12 @@ var StdioServerTransport = class {
     this.onclose?.();
   }
   send(message) {
-    return new Promise((resolve) => {
+    return new Promise((resolve2) => {
       const json = serializeMessage(message);
       if (this._stdout.write(json)) {
-        resolve();
+        resolve2();
       } else {
-        this._stdout.once("drain", resolve);
+        this._stdout.once("drain", resolve2);
       }
     });
   }
@@ -17227,11 +17245,36 @@ function runRecovery() {
 // src/mcp/stdio-server.ts
 init_config();
 init_logger();
-var version2 = "1.1.1";
+var import_meta2 = {};
+function resolveVersion() {
+  if (true) return "1.1.3";
+  try {
+    const pkgPath = (0, import_node_path5.resolve)((0, import_node_path5.dirname)((0, import_node_url2.fileURLToPath)(import_meta2.url)), "../../package.json");
+    return JSON.parse((0, import_node_fs6.readFileSync)(pkgPath, "utf-8")).version;
+  } catch {
+    return "0.0.0-dev";
+  }
+}
+var version2 = resolveVersion();
 var log26 = createLogger("mcp:stdio");
-getDb();
-runRecovery();
-var config2 = getConfig();
+try {
+  getDb();
+} catch (err) {
+  log26.error("Database initialization failed", err);
+  process.exit(1);
+}
+try {
+  runRecovery();
+} catch (err) {
+  log26.error("Recovery failed", err);
+}
+var config2;
+try {
+  config2 = getConfig();
+} catch (err) {
+  log26.error("Config load failed", err);
+  process.exit(1);
+}
 if (config2.webUI.enabled) {
   Promise.resolve().then(() => (init_server(), server_exports)).then(({ startWebServer: startWebServer2 }) => startWebServer2(config2.webUI.port)).catch((err) => log26.warn("Failed to start web UI", err));
 }

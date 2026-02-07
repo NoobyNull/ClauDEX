@@ -8241,7 +8241,11 @@ function buildDigest(observations) {
 }
 async function tryImportSdk() {
   try {
-    const mod = await import("@anthropic-ai/claude-code");
+    const moduleName = "@anthropic-ai/claude-code";
+    const mod = await import(
+      /* webpackIgnore: true */
+      moduleName
+    );
     if (mod && typeof mod.query === "function") {
       return mod;
     }
@@ -8450,7 +8454,11 @@ function inferRelationship(newKn, existing) {
 }
 async function tryImportSdk2() {
   try {
-    const mod = await import("@anthropic-ai/claude-code");
+    const moduleName = "@anthropic-ai/claude-code";
+    const mod = await import(
+      /* webpackIgnore: true */
+      moduleName
+    );
     if (mod && typeof mod.query === "function") {
       return mod;
     }
@@ -8644,7 +8652,11 @@ function applyCurationResult(buffer, staged, result) {
 }
 async function tryImportSdk3() {
   try {
-    const mod = await import("@anthropic-ai/claude-code");
+    const moduleName = "@anthropic-ai/claude-code";
+    const mod = await import(
+      /* webpackIgnore: true */
+      moduleName
+    );
     if (mod && typeof mod.query === "function") {
       return mod;
     }

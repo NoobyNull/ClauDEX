@@ -1,3 +1,4 @@
+import path from 'node:path';
 import { createLogger } from '../shared/logger.js';
 import type { TopicShiftScore, Observation } from '../shared/types.js';
 
@@ -16,9 +17,9 @@ function extractFilePaths(text: string): Set<string> {
 function extractDirectories(files: Set<string>): Set<string> {
   const dirs = new Set<string>();
   for (const f of files) {
-    const parts = f.split('/');
-    if (parts.length >= 2) {
-      dirs.add(parts.slice(0, -1).join('/'));
+    const dir = path.dirname(f);
+    if (dir !== f && dir !== '.') {
+      dirs.add(dir);
     }
   }
   return dirs;
@@ -232,8 +233,8 @@ function deriveTopicLabel(activity: string, files: Set<string>): string {
   // Prefer file-based labels
   if (files.size > 0) {
     const first = [...files][0];
-    const parts = first.split('/');
-    return parts.slice(-2).join('/');
+    const parsed = path.parse(first);
+    return path.join(path.basename(parsed.dir), parsed.base);
   }
 
   // Fall back to first few words of the prompt

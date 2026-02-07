@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "noobynull-engram",
-  "description": "Persistent memory for Claude Code",
+  "description": "Persistent memory system for Claude Code",
   "owner": {
     "name": "NoobyNull"
   },
@@ -9,16 +9,30 @@
     {
       "name": "engram",
       "source": "./plugin",
-      "description": "Persistent memory for Claude Code — captures observations, saves knowledge, enables search across sessions.",
-      "version": "1.0.2",
+      "description": "Persistent memory for Claude Code — automatic observation capture, knowledge management, hybrid search, conversation stashing, and knowledge graph.",
+      "version": "1.1.4",
       "author": {
         "name": "NoobyNull"
       },
       "homepage": "https://github.com/NoobyNull/Engram",
       "repository": "https://github.com/NoobyNull/Engram",
       "license": "MIT",
-      "keywords": ["memory", "persistent", "knowledge", "mcp", "hooks", "sessions"],
-      "category": "development"
+      "keywords": [
+        "memory",
+        "persistent",
+        "knowledge",
+        "search",
+        "mcp",
+        "hooks",
+        "sessions",
+        "embeddings",
+        "sqlite",
+        "vector-search"
+      ],
+      "category": "development",
+      "requirements": {
+        "node": ">=20.0.0"
+      }
     }
   ]
 }

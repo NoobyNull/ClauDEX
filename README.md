@@ -84,18 +84,39 @@ Claude: [Engram Memory] Preference: Always use pnpm in this project, not npm
 
 ## Setup
 
+### Option 1: Native Installer (Recommended)
+
 ```bash
-git clone https://github.com/NoobyNull/Engram.git
+# Add Engram marketplace
+claude plugin marketplace add NoobyNull/Engram
+
+# Install Engram
+claude plugin install engram@noobynull-engram
 ```
 
-Then start Claude Code inside the cloned directory. Engram ships pre-built — the Setup hook will automatically install native dependencies on first launch.
+Or use the interactive plugin manager:
+```bash
+claude
+/plugin marketplace add NoobyNull/Engram
+/plugin install engram@noobynull-engram
+```
 
-For development (modifying Engram source):
+### Option 2: Manual Installation
+
+```bash
+git clone https://github.com/NoobyNull/Engram.git ~/.claude/plugins/engram
+```
+
+Then start Claude Code. Engram ships pre-built — the Setup hook will automatically install native dependencies on first launch.
+
+### For Development
+
+If you're modifying Engram source:
 
 ```bash
 cd Engram
 npm install
-node setup.js
+npm run build:plugin
 ```
 
 The database lives at `~/.engram/engram.db`. Override with `ENGRAM_DATA_DIR` env var.

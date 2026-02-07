@@ -5,8 +5,5 @@
   "author": {
     "name": "Engram"
   },
-  "license": "MIT",
-  "skills": "skills/",
-  "hooks": "hooks/hooks.json",
-  "mcpServers": ".mcp.json"
+  "license": "MIT"
 }

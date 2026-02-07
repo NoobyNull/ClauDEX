@@ -155,9 +155,6 @@ const pluginJson = {
   author: { name: 'Engram' },
   repository: 'https://github.com/NoobyNull/Engram',
   license: 'MIT',
-  skills: 'skills/',
-  hooks: 'hooks/hooks.json',
-  mcpServers: '.mcp.json',
 };
 
 fs.writeFileSync(

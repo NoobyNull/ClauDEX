@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * ClauDEX Setup — Cross-platform installer.
+ * Engram Setup — Cross-platform installer.
  *
  * Usage:
  *   node setup.js            Full install + register
@@ -30,7 +30,7 @@ for (const arg of args) {
       break;
     case '--help':
     case '-h':
-      console.log(`ClauDEX Setup
+      console.log(`Engram Setup
 
 Usage:
   node setup.js            Full install + register
@@ -38,7 +38,7 @@ Usage:
   node setup.js --help     Show this help
 
 Environment:
-  CLAUDEX_DATA_DIR         Override data directory (default: ~/.claudex)
+  ENGRAM_DATA_DIR         Override data directory (default: ~/.engram)
   CLAUDE_SETTINGS_DIR      Override Claude settings dir (default: ~/.claude)`);
       process.exit(0);
   }
@@ -200,11 +200,11 @@ step('Generating MCP server configuration...');
 
 const mcpJson = {
   mcpServers: {
-    claudex: {
+    engram: {
       command: 'node',
       args: ['${CLAUDE_PLUGIN_ROOT}/plugin/scripts/mcp-server.cjs'],
       env: {
-        CLAUDEX_PLUGIN_ROOT: '${CLAUDE_PLUGIN_ROOT}',
+        ENGRAM_PLUGIN_ROOT: '${CLAUDE_PLUGIN_ROOT}',
       },
     },
   },
@@ -221,10 +221,10 @@ step('Updating plugin manifest...');
 const pkg = JSON.parse(fs.readFileSync(path.join(PLUGIN_DIR, 'package.json'), 'utf-8'));
 
 const pluginJson = {
-  name: 'claudex',
+  name: 'engram',
   version: pkg.version,
   description: 'Persistent memory for Claude Code — captures observations, saves knowledge, enables search across sessions.',
-  author: { name: 'ClauDEX' },
+  author: { name: 'Engram' },
   license: 'MIT',
   skills: 'skills/',
   hooks: 'hooks/hooks.json',
@@ -329,13 +329,13 @@ if (!buildOnly) {
 // ─────────────────────────────────────────────────────────────────
 console.log();
 console.log(c.bold('  ╔═══════════════════════════════════════╗'));
-console.log(c.bold(`  ║  ${c.green('✓')}  ClauDEX is ready!                  ║`));
+console.log(c.bold(`  ║  ${c.green('✓')}  Engram is ready!                  ║`));
 console.log(c.bold('  ╚═══════════════════════════════════════╝'));
 console.log();
 
 console.log(c.bold('QUICK START'));
 console.log();
-console.log('  Launch Claude Code with ClauDEX loaded:');
+console.log('  Launch Claude Code with Engram loaded:');
 console.log();
 console.log(`    ${c.cyan(`claude --plugin-dir "${PLUGIN_DIR}"`)}`);
 console.log();
@@ -366,9 +366,9 @@ console.log();
 
 console.log(c.bold('FILES'));
 console.log();
-console.log(`  Data:     ${c.dim('~/.claudex/')}`);
-console.log(`  Config:   ${c.dim('~/.claudex/settings.json')}`);
-console.log(`  Database: ${c.dim('~/.claudex/claudex.db')}`);
+console.log(`  Data:     ${c.dim('~/.engram/')}`);
+console.log(`  Config:   ${c.dim('~/.engram/settings.json')}`);
+console.log(`  Database: ${c.dim('~/.engram/engram.db')}`);
 console.log(`  Plugin:   ${c.dim(PLUGIN_DIR)}`);
 console.log();
 

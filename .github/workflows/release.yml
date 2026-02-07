@@ -20,6 +20,7 @@ jobs:
 
       - run: npm ci
       - run: npm run build
+      - run: npm run build:plugin
 
       - name: Smoke test
         run: |
@@ -28,10 +29,10 @@ jobs:
             | grep -q '"serverInfo"'
 
       - name: Package release
-        run: tar czf claudex-${{ github.ref_name }}.tar.gz dist/ .claude/ .claude-plugin/ hooks/ src/web/public/ package.json package-lock.json setup.sh README.md
+        run: tar czf engram-${{ github.ref_name }}.tar.gz dist/ plugin/ .claude-plugin/ skills/ src/web/public/ package.json package-lock.json setup.sh README.md
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: claudex-*.tar.gz
+          files: engram-*.tar.gz
           generate_release_notes: true

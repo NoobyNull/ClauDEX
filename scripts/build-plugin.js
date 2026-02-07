@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * ClauDEX Plugin Builder
+ * Engram Plugin Builder
  *
  * Bundles the plugin into a self-contained directory using esbuild.
  * Native dependencies (better-sqlite3, sqlite-vec, fastembed) stay external
@@ -39,7 +39,7 @@ const shared = {
   format: 'cjs',
   external: EXTERNAL,
   define: {
-    '__CLAUDEX_VERSION__': JSON.stringify(pkg.version),
+    '__ENGRAM_VERSION__': JSON.stringify(pkg.version),
   },
   logOverride: {
     'empty-import-meta': 'silent', // import.meta.url is ESM-only fallback, dead code in CJS
@@ -129,11 +129,11 @@ fs.writeFileSync(
 console.log('▸ Generating .mcp.json...');
 const mcpJson = {
   mcpServers: {
-    claudex: {
+    engram: {
       command: 'node',
       args: ['${CLAUDE_PLUGIN_ROOT}/scripts/mcp-server.cjs'],
       env: {
-        CLAUDEX_PLUGIN_ROOT: '${CLAUDE_PLUGIN_ROOT}',
+        ENGRAM_PLUGIN_ROOT: '${CLAUDE_PLUGIN_ROOT}',
       },
     },
   },
@@ -149,11 +149,11 @@ console.log('▸ Generating plugin.json...');
 fs.mkdirSync(path.join(OUT, '.claude-plugin'), { recursive: true });
 
 const pluginJson = {
-  name: 'claudex',
+  name: 'engram',
   version: pkg.version,
   description: 'Persistent memory for Claude Code — captures observations, saves knowledge, enables search across sessions.',
-  author: { name: 'ClauDEX' },
-  repository: 'https://github.com/NoobyNull/ClauDEX',
+  author: { name: 'Engram' },
+  repository: 'https://github.com/NoobyNull/Engram',
   license: 'MIT',
   skills: './skills/',
   mcpServers: './.mcp.json',
@@ -167,10 +167,10 @@ fs.writeFileSync(
 // ── Generate package.json (native deps only) ─────────────────────
 console.log('▸ Generating package.json...');
 const pluginPkg = {
-  name: 'claudex-plugin',
+  name: 'engram-plugin',
   version: pkg.version,
   private: true,
-  description: 'ClauDEX plugin runtime — native dependencies',
+  description: 'Engram plugin runtime — native dependencies',
   dependencies: {
     'better-sqlite3': pkg.dependencies['better-sqlite3'],
   },
@@ -191,7 +191,7 @@ fs.writeFileSync(
 console.log('▸ Generating setup.js...');
 const setupScript = `#!/usr/bin/env node
 /**
- * ClauDEX Plugin Setup
+ * Engram Plugin Setup
  * Installs native dependencies. Chained into the SessionStart hook.
  * Skips instantly after first successful install (version-gated marker file).
  */
@@ -217,7 +217,7 @@ const ok   = (msg) => console.error('  \\x1b[32mOK\\x1b[0m ' + msg);
 const warn = (msg) => console.error('  \\x1b[33m!!\\x1b[0m ' + msg);
 const fail = (msg) => console.error('  \\x1b[31mFAIL\\x1b[0m ' + msg);
 
-console.error('\\n\\x1b[36m\\x1b[1mClauDEX\\x1b[0m Installing native dependencies...\\n');
+console.error('\\n\\x1b[36m\\x1b[1mEngram\\x1b[0m Installing native dependencies...\\n');
 
 try {
   execSync('npm install --production', {
@@ -257,7 +257,7 @@ fs.writeFileSync(MARKER, JSON.stringify({
   installed: new Date().toISOString(),
 }) + '\\n');
 
-console.error('\\n\\x1b[32m\\x1b[1mClauDEX setup complete.\\x1b[0m\\n');
+console.error('\\n\\x1b[32m\\x1b[1mEngram setup complete.\\x1b[0m\\n');
 `;
 
 fs.writeFileSync(path.join(OUT, 'scripts/setup.js'), setupScript);

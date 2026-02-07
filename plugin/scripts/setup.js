@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * ClauDEX Plugin Setup
+ * Engram Plugin Setup
  * Installs native dependencies. Chained into the SessionStart hook.
  * Skips instantly after first successful install (version-gated marker file).
  */
@@ -26,7 +26,7 @@ const ok   = (msg) => console.error('  \x1b[32mOK\x1b[0m ' + msg);
 const warn = (msg) => console.error('  \x1b[33m!!\x1b[0m ' + msg);
 const fail = (msg) => console.error('  \x1b[31mFAIL\x1b[0m ' + msg);
 
-console.error('\n\x1b[36m\x1b[1mClauDEX\x1b[0m Installing native dependencies...\n');
+console.error('\n\x1b[36m\x1b[1mEngram\x1b[0m Installing native dependencies...\n');
 
 try {
   execSync('npm install --production', {
@@ -66,4 +66,4 @@ fs.writeFileSync(MARKER, JSON.stringify({
   installed: new Date().toISOString(),
 }) + '\n');
 
-console.error('\n\x1b[32m\x1b[1mClauDEX setup complete.\x1b[0m\n');
+console.error('\n\x1b[32m\x1b[1mEngram setup complete.\x1b[0m\n');

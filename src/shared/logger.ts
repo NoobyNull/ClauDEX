@@ -6,7 +6,7 @@ export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
 const LEVELS: Record<LogLevel, number> = { debug: 0, info: 1, warn: 2, error: 3 };
 
-let logLevel: LogLevel = (process.env['CLAUDEX_LOG_LEVEL'] as LogLevel) || 'info';
+let logLevel: LogLevel = (process.env['ENGRAM_LOG_LEVEL'] as LogLevel) || 'info';
 let logFile: string | null = null;
 
 function getLogFile(): string {
@@ -15,7 +15,7 @@ function getLogFile(): string {
     if (!fs.existsSync(dataDir)) {
       fs.mkdirSync(dataDir, { recursive: true });
     }
-    logFile = path.join(dataDir, 'claudex.log');
+    logFile = path.join(dataDir, 'engram.log');
   }
   return logFile;
 }

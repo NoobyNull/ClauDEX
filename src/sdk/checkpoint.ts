@@ -12,7 +12,7 @@ const log = createLogger('sdk:checkpoint');
  * Create a checkpoint (session fork) — a snapshot of the current session state.
  * Used for recovery, branching, and destructive-operation safety.
  *
- * @param claudeSessionId — the Claude CLI session ID to resolve to a ClauDEX session.
+ * @param claudeSessionId — the Claude CLI session ID to resolve to a Engram session.
  * @param label — optional human-readable label for this checkpoint.
  */
 export async function createCheckpoint(claudeSessionId: string, label?: string): Promise<SessionFork | null> {

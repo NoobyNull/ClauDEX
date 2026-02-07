@@ -1,26 +1,26 @@
 ---
-name: status
-description: Show ClauDEX system health, build info, and service status
+name: engram:status
+description: Show Engram system health, build info, and service status
 user_invocable: true
 arguments: []
 ---
 
 # /status
 
-Display the ClauDEX status dashboard by fetching pre-built status data from the web API.
+Display the Engram status dashboard by fetching pre-built status data from the web API.
 
 ## Behavior
 
 1. Fetch `http://127.0.0.1:37820/api/status` (use WebFetch or Bash `curl -s`)
 2. Format the JSON response as a clean status report (see format below)
-3. If the fetch fails, report that the ClauDEX web server is not running
+3. If the fetch fails, report that the Engram web server is not running
 
 ## Output Format
 
 Format the JSON response as a concise dashboard. Use checkmarks/crosses for booleans, format `dbSize` bytes as KB/MB.
 
 ```
-ClauDEX Status
+Engram Status
 ==============
 
 System

@@ -102,6 +102,6 @@ export async function handleResume(args: Record<string, unknown>): Promise<unkno
     observation_count: observations.length,
     hint: isResumable
       ? `For full context, run: ${nativeResume}`
-      : 'Native resume not available — context has been injected from ClauDEX memory.',
+      : 'Native resume not available — context has been injected from Engram memory.',
   };
 }

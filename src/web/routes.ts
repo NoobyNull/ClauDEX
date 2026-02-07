@@ -188,11 +188,11 @@ export async function handleApiRequest(req: IncomingMessage, res: ServerResponse
     const stats = await handleStats({});
     const dbPath = getDbPath();
     const dataDir = config.dataDir;
-    const logPath = path.join(dataDir, 'claudex.log');
+    const logPath = path.join(dataDir, 'engram.log');
 
     // Read version from install marker or package.json
     let version = 'unknown';
-    const pluginRoot = process.env['CLAUDEX_PLUGIN_ROOT'] || '';
+    const pluginRoot = process.env['ENGRAM_PLUGIN_ROOT'] || '';
     try {
       const marker = JSON.parse(fs.readFileSync(path.join(pluginRoot, '.install-marker'), 'utf-8'));
       version = marker.version;

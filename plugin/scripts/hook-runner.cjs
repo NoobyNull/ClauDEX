@@ -35,11 +35,11 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 
 // src/shared/config.ts
 function resolveDataDir() {
-  const envDir = process.env["CLAUDEX_DATA_DIR"];
+  const envDir = process.env["ENGRAM_DATA_DIR"];
   if (envDir) {
     return envDir.startsWith("~") ? envDir.replace("~", import_node_os.default.homedir()) : envDir;
   }
-  return import_node_path.default.join(import_node_os.default.homedir(), ".claudex");
+  return import_node_path.default.join(import_node_os.default.homedir(), ".engram");
 }
 function getConfig() {
   if (cachedConfig) return cachedConfig;
@@ -76,7 +76,7 @@ function ensureDataDir() {
   return config.dataDir;
 }
 function getDbPath() {
-  return import_node_path.default.join(ensureDataDir(), "claudex.db");
+  return import_node_path.default.join(ensureDataDir(), "engram.db");
 }
 function isPrivacyExcluded(filePath) {
   const config = getConfig();
@@ -93,7 +93,7 @@ var init_config = __esm({
     import_node_path = __toESM(require("node:path"), 1);
     import_node_os = __toESM(require("node:os"), 1);
     DEFAULT_CONFIG = {
-      dataDir: import_node_path.default.join(import_node_os.default.homedir(), ".claudex"),
+      dataDir: import_node_path.default.join(import_node_os.default.homedir(), ".engram"),
       maxContextTokens: 2e3,
       sessionHistoryDepth: 10,
       autoCapture: true,
@@ -145,7 +145,7 @@ function getLogFile() {
     if (!import_node_fs2.default.existsSync(dataDir)) {
       import_node_fs2.default.mkdirSync(dataDir, { recursive: true });
     }
-    logFile = import_node_path2.default.join(dataDir, "claudex.log");
+    logFile = import_node_path2.default.join(dataDir, "engram.log");
   }
   return logFile;
 }
@@ -205,7 +205,7 @@ var init_logger = __esm({
     import_node_path2 = __toESM(require("node:path"), 1);
     init_config();
     LEVELS = { debug: 0, info: 1, warn: 2, error: 3 };
-    logLevel = process.env["CLAUDEX_LOG_LEVEL"] || "info";
+    logLevel = process.env["ENGRAM_LOG_LEVEL"] || "info";
     logFile = null;
   }
 });
@@ -1714,7 +1714,7 @@ function buildConflictPrompt(conflict, observation) {
   const similarityPct = Math.round(conflict.similarity * 100);
   const newSummary = [observation.tool_input_summary, observation.tool_output_summary].filter(Boolean).join(" \u2014 ").slice(0, 200);
   return [
-    `[ClauDEX Memory Conflict] A new observation looks ${similarityPct}% similar to an existing memory.`,
+    `[Engram Memory Conflict] A new observation looks ${similarityPct}% similar to an existing memory.`,
     ``,
     `New: [${observation.tool_name}] ${newSummary}`,
     `Existing (${existing.type}): ${existing.snippet.slice(0, 200)}`,
@@ -9150,7 +9150,7 @@ var log11 = createLogger("context-builder");
 function buildSessionStartContext(input) {
   const { project, recentSessions, conversations, stashedSidebars, knowledge, maxTokens } = input;
   const parts = [];
-  parts.push(`[ClauDEX Memory] Project: ${project.name} (${project.root_path})`);
+  parts.push(`[Engram Memory] Project: ${project.name} (${project.root_path})`);
   if (project.detected_stack.length > 0) {
     parts.push(`Stack: ${project.detected_stack.join(", ")}`);
   }
@@ -9166,8 +9166,8 @@ function buildSessionStartContext(input) {
   if (stashSection) parts.push(stashSection);
   const filesSection = buildRecentFilesSection(recentSessions, filesBudget);
   if (filesSection) parts.push(filesSection);
-  parts.push("\u2192 Use mcp__claudex__memory_resume to pick up a stashed sidebar");
-  parts.push("\u2192 Use mcp__claudex__memory_search to find specific memories");
+  parts.push("\u2192 Use mcp__engram__memory_resume to pick up a stashed sidebar");
+  parts.push("\u2192 Use mcp__engram__memory_search to find specific memories");
   const result = parts.join("\n");
   log11.info("Built context", { tokens: estimateTokens(result), maxTokens });
   return result;
@@ -9511,8 +9511,8 @@ async function handleTopicShift(sessionId, projectPath, projectId, newActivity) 
     recordSuggestionShown(projectId);
     const topicLabel = result.newTopic || "a different topic";
     const suggestion = [
-      `[ClauDEX] It looks like you may be switching to ${topicLabel}.`,
-      `Use mcp__claudex__memory_stash to save your current thread ("${active.topic || "current topic"}") before continuing.`,
+      `[Engram] It looks like you may be switching to ${topicLabel}.`,
+      `Use mcp__engram__memory_stash to save your current thread ("${active.topic || "current topic"}") before continuing.`,
       `(Score: ${result.score.toFixed(2)}, threshold: ${thresholds.ask_threshold.toFixed(2)}/${thresholds.trust_threshold.toFixed(2)})`
     ].join(" ");
     log16.info("Topic shift: ASK tier", {

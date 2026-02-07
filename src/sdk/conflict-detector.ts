@@ -100,7 +100,7 @@ export function buildConflictPrompt(conflict: ConflictInfo, observation: Observa
     .slice(0, 200);
 
   return [
-    `[ClauDEX Memory Conflict] A new observation looks ${similarityPct}% similar to an existing memory.`,
+    `[Engram Memory Conflict] A new observation looks ${similarityPct}% similar to an existing memory.`,
     ``,
     `New: [${observation.tool_name}] ${newSummary}`,
     `Existing (${existing.type}): ${existing.snippet.slice(0, 200)}`,

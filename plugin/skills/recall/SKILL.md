@@ -1,5 +1,5 @@
 ---
-name: recall
+name: engram:recall
 description: Search persistent memory conversationally
 user_invocable: true
 arguments:
@@ -10,7 +10,7 @@ arguments:
 
 # /recall [query]
 
-Search ClauDEX persistent memory with a conversational interface.
+Search Engram persistent memory with a conversational interface.
 
 ## Behavior
 

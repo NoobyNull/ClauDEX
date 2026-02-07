@@ -79,8 +79,8 @@ export interface SdkToolDef {
   handler: (args: Record<string, unknown>) => Promise<unknown>;
 }
 
-/** All ClauDEX MCP tools as SDK-native definitions. */
-export function getClaudexTools(): SdkToolDef[] {
+/** All Engram MCP tools as SDK-native definitions. */
+export function getEngramTools(): SdkToolDef[] {
   return [
     {
       name: 'memory_search',
@@ -170,8 +170,8 @@ export function getClaudexTools(): SdkToolDef[] {
  * Create the in-process MCP server configuration for the Claude Code SDK.
  * Returns a record suitable for the `mcpServers` option.
  */
-export function createClaudexMcpServer(): Record<string, unknown> {
-  const tools = getClaudexTools();
+export function createEngramMcpServer(): Record<string, unknown> {
+  const tools = getEngramTools();
 
   // Build tool definitions in MCP-compatible format
   const toolDefs = tools.map(t => ({

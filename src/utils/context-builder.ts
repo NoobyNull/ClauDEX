@@ -18,7 +18,7 @@ export function buildSessionStartContext(input: ContextInput): string {
   const parts: string[] = [];
 
   // Header
-  parts.push(`[ClauDEX Memory] Project: ${project.name} (${project.root_path})`);
+  parts.push(`[Engram Memory] Project: ${project.name} (${project.root_path})`);
   if (project.detected_stack.length > 0) {
     parts.push(`Stack: ${project.detected_stack.join(', ')}`);
   }
@@ -46,8 +46,8 @@ export function buildSessionStartContext(input: ContextInput): string {
   if (filesSection) parts.push(filesSection);
 
   // Footer
-  parts.push('→ Use mcp__claudex__memory_resume to pick up a stashed sidebar');
-  parts.push('→ Use mcp__claudex__memory_search to find specific memories');
+  parts.push('→ Use mcp__engram__memory_resume to pick up a stashed sidebar');
+  parts.push('→ Use mcp__engram__memory_search to find specific memories');
 
   const result = parts.join('\n');
   log.info('Built context', { tokens: estimateTokens(result), maxTokens });

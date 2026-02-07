@@ -1,4 +1,4 @@
-// ClauDEX — Help View
+// Engram — Help View
 // Comprehensive in-app guide generated from capabilities
 
 async function renderHelp(container) {
@@ -368,7 +368,7 @@ async function renderHelp(container) {
   container.innerHTML = `
     <div class="help-wrap">
       <div class="help-header">
-        <h1>ClauDEX Help</h1>
+        <h1>Engram Help</h1>
         <p>Persistent memory for Claude Code — everything you need to know about your memory system.</p>
       </div>
 
@@ -471,9 +471,9 @@ function buildHelpSections() {
       title: 'Overview',
       icon: '\u{1F9E0}',
       iconBg: 'rgba(242,101,34,0.12)',
-      keywords: 'architecture what is claudex memory plugin persistent',
+      keywords: 'architecture what is engram memory plugin persistent',
       html: `
-        <p>ClauDEX gives Claude Code <strong>persistent memory</strong> across sessions, projects, and conversations. Every tool use is captured as an observation, and you can save knowledge explicitly. All data is stored locally in a SQLite database.</p>
+        <p>Engram gives Claude Code <strong>persistent memory</strong> across sessions, projects, and conversations. Every tool use is captured as an observation, and you can save knowledge explicitly. All data is stored locally in a SQLite database.</p>
         <div class="help-diagram"><span class="hl">Claude Code SDK</span>
   \u2502
   \u251C\u2500\u2500 <span class="hl">6 Hooks</span> (session lifecycle, tool capture, topic shifts)
@@ -482,7 +482,7 @@ function buildHelpSections() {
   \u251C\u2500\u2500 <span class="hl">Knowledge Graph</span> + <span class="hl">Discovery Engine</span>
   \u251C\u2500\u2500 <span class="hl">Conflict Detection</span>
   \u2514\u2500\u2500 <span class="hl">Web UI</span> at http://127.0.0.1:37820</div>
-        <p>Data lives at <code>~/.claudex/</code> (override with <code>CLAUDEX_DATA_DIR</code> env var). The database uses WAL mode for crash resilience.</p>
+        <p>Data lives at <code>~/.engram/</code> (override with <code>ENGRAM_DATA_DIR</code> env var). The database uses WAL mode for crash resilience.</p>
       `
     },
 
@@ -493,7 +493,7 @@ function buildHelpSections() {
       iconBg: 'rgba(99,179,237,0.12)',
       keywords: 'remember forget recall stash resume checkpoint resolve skills commands',
       html: `
-        <p>Type these in the Claude Code prompt. They're the primary way to interact with ClauDEX.</p>
+        <p>Type these in the Claude Code prompt. They're the primary way to interact with Engram.</p>
         <div class="help-cards">
           ${skillCard('/remember <content>', 'Save something to memory. Auto-detects type (fact, decision, preference, pattern, issue, context) and suggests tags.')}
           ${skillCard('/forget <what>', 'Delete memories. Searches first, shows matches, confirms before deleting.')}
@@ -828,11 +828,11 @@ function buildHelpSections() {
       iconBg: 'rgba(160,174,192,0.12)',
       keywords: 'config settings json file defaults data directory',
       html: `
-        <p>Settings are stored at <code>~/.claudex/settings.json</code>. You can edit them directly or use the Settings page in this UI.</p>
+        <p>Settings are stored at <code>~/.engram/settings.json</code>. You can edit them directly or use the Settings page in this UI.</p>
         <div class="help-collapse-trigger"><span class="chevron">\u25B6</span> Full Default Configuration</div>
         <div class="help-collapse-body">
           <div class="help-code">{
-  "dataDir": "~/.claudex",
+  "dataDir": "~/.engram",
   "maxContextTokens": 2000,
   "sessionHistoryDepth": 10,
   "autoCapture": true,

@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
- * ClauDEX Teardown — Cross-platform uninstaller.
+ * Engram Teardown — Cross-platform uninstaller.
  *
  * Usage:
  *   node teardown.js             Unregister plugin, remove build artifacts
- *   node teardown.js --purge     Also delete ~/.claudex (database + config)
+ *   node teardown.js --purge     Also delete ~/.engram (database + config)
  *   node teardown.js --help      Show help
  */
 
@@ -17,7 +17,7 @@ import os from 'node:os';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PLUGIN_DIR = __dirname;
-const DATA_DIR = process.env.CLAUDEX_DATA_DIR || path.join(os.homedir(), '.claudex');
+const DATA_DIR = process.env.ENGRAM_DATA_DIR || path.join(os.homedir(), '.engram');
 const IS_WIN = process.platform === 'win32';
 
 // ── Parse args ──────────────────────────────────────────────────
@@ -31,15 +31,15 @@ for (const arg of args) {
       break;
     case '--help':
     case '-h':
-      console.log(`ClauDEX Teardown
+      console.log(`Engram Teardown
 
 Usage:
   node teardown.js             Unregister + remove build artifacts
-  node teardown.js --purge     Also delete ~/.claudex (database, config, all data)
+  node teardown.js --purge     Also delete ~/.engram (database, config, all data)
   node teardown.js --help      Show this help
 
 Environment:
-  CLAUDEX_DATA_DIR             Override data directory (default: ~/.claudex)
+  ENGRAM_DATA_DIR             Override data directory (default: ~/.engram)
   CLAUDE_SETTINGS_DIR          Override Claude settings dir (default: ~/.claude)`);
       process.exit(0);
   }
@@ -104,10 +104,10 @@ if (fs.existsSync(settingsLocal)) {
     }
     if (Object.keys(cfg).length === 0) {
       fs.unlinkSync(settingsLocal);
-      ok('Removed settings.local.json (was only ClauDEX)');
+      ok('Removed settings.local.json (was only Engram)');
     } else {
       fs.writeFileSync(settingsLocal, JSON.stringify(cfg, null, 2) + '\n');
-      ok('Removed ClauDEX entry from settings.local.json');
+      ok('Removed Engram entry from settings.local.json');
     }
   } catch {
     skip('settings.local.json not parseable, skipped');
@@ -125,7 +125,7 @@ const webPort = 37820;
 const portInUse = await checkPort(webPort);
 if (portInUse) {
   try {
-    // Try a graceful HTTP request to check it's actually ClauDEX
+    // Try a graceful HTTP request to check it's actually Engram
     // then kill via platform-appropriate method
     await killProcessOnPort(webPort);
     ok(`Stopped process on port ${webPort}`);
@@ -159,7 +159,7 @@ if (purge) {
   step('Purging data directory...');
 
   if (fs.existsSync(DATA_DIR)) {
-    const dbPath = path.join(DATA_DIR, 'claudex.db');
+    const dbPath = path.join(DATA_DIR, 'engram.db');
     const dbSize = fs.existsSync(dbPath) ? formatBytes(fs.statSync(dbPath).size) : '0 B';
     const totalSize = formatBytes(dirSize(DATA_DIR));
     console.log(`    ${c.dim(`Database: ${dbSize}`)}`);
@@ -183,7 +183,7 @@ if (purge) {
 // ─────────────────────────────────────────────────────────────────
 console.log();
 console.log(c.bold('  ╔═══════════════════════════════════════╗'));
-console.log(c.bold(`  ║  ${c.green('✓')}  ClauDEX has been removed.          ║`));
+console.log(c.bold(`  ║  ${c.green('✓')}  Engram has been removed.          ║`));
 console.log(c.bold('  ╚═══════════════════════════════════════╝'));
 console.log();
 

@@ -17,7 +17,7 @@ const MIME_TYPES: Record<string, string> = {
 };
 
 function serveStatic(res: http.ServerResponse, urlPath: string): void {
-  const pluginRoot = process.env['CLAUDEX_PLUGIN_ROOT'] || '';
+  const pluginRoot = process.env['ENGRAM_PLUGIN_ROOT'] || '';
   const publicDir = path.join(pluginRoot, 'web', 'public');
   let filePath = urlPath === '/' ? '/index.html' : urlPath;
 
@@ -45,7 +45,7 @@ function serveStatic(res: http.ServerResponse, urlPath: string): void {
 }
 
 export function startWebServer(port: number): void {
-  // Probe the port first — if another ClauDEX instance already owns
+  // Probe the port first — if another Engram instance already owns
   // the web UI, skip silently so we don't spam error logs.
   const probe = http.createServer();
   probe.once('error', (err: NodeJS.ErrnoException) => {

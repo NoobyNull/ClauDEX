@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * ClauDEX — Standalone stdio MCP server.
+ * Engram — Standalone stdio MCP server.
  *
  * Wraps all 9 MCP tools for use with the Claude Code plugin system.
  * Launched via .mcp.json:
@@ -24,11 +24,11 @@ import { runRecovery } from '../recovery/restore.js';
 import { getConfig } from '../shared/config.js';
 import { createLogger } from '../shared/logger.js';
 
-declare const __CLAUDEX_VERSION__: string | undefined;
+declare const __ENGRAM_VERSION__: string | undefined;
 
 function resolveVersion(): string {
-  // esbuild injects __CLAUDEX_VERSION__ at compile time
-  if (typeof __CLAUDEX_VERSION__ !== 'undefined') return __CLAUDEX_VERSION__;
+  // esbuild injects __ENGRAM_VERSION__ at compile time
+  if (typeof __ENGRAM_VERSION__ !== 'undefined') return __ENGRAM_VERSION__;
   // Fallback for tsc / development builds — read from package.json
   try {
     const pkgPath = resolve(dirname(fileURLToPath(import.meta.url)), '../../package.json');
@@ -70,7 +70,7 @@ if (config.webUI.enabled) {
 }
 
 const server = new Server(
-  { name: 'claudex', version },
+  { name: 'engram', version },
   { capabilities: { tools: {} } },
 );
 

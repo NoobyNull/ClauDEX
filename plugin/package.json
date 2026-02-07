@@ -1,8 +1,8 @@
 {
-  "name": "claudex-plugin",
-  "version": "1.0.7",
+  "name": "engram-plugin",
+  "version": "1.1.2",
   "private": true,
-  "description": "ClauDEX plugin runtime — native dependencies",
+  "description": "Engram plugin runtime — native dependencies",
   "dependencies": {
     "better-sqlite3": "^11.7.0"
   },

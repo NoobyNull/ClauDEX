@@ -1,9 +1,9 @@
 // ═══════════════════════════════════════════════════════════════════
-// ClauDEX Knowledge Graph Explorer
+// Engram Knowledge Graph Explorer
 // Shared panel for exploring knowledge connections from any view
 // ═══════════════════════════════════════════════════════════════════
 
-const GX_STYLE_ID = 'claudex-graph-explorer-styles';
+const GX_STYLE_ID = 'engram-graph-explorer-styles';
 
 function injectGraphStyles() {
   if (document.getElementById(GX_STYLE_ID)) return;

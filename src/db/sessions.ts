@@ -44,23 +44,23 @@ export function getSessionByClaudeId(claudeSessionId: string): Session | null {
 }
 
 /**
- * Link a new Claude session ID to an existing ClauDEX session.
+ * Link a new Claude session ID to an existing Engram session.
  *
  * When Claude resumes a session, the resumed session gets a different
  * session_id (known SDK bug). This function updates the primary
  * claude_session_id and archives the old one in prior_claude_session_ids
- * so we can still find the ClauDEX session by any of its Claude IDs.
+ * so we can still find the Engram session by any of its Claude IDs.
  */
-export function linkClaudeSessionId(claudexSessionId: string, newClaudeSessionId: string): void {
+export function linkClaudeSessionId(engramSessionId: string, newClaudeSessionId: string): void {
   const db = getDb();
-  const session = getSession(claudexSessionId);
+  const session = getSession(engramSessionId);
   if (!session) {
-    log.warn('Cannot link Claude session ID — ClauDEX session not found', { claudexSessionId });
+    log.warn('Cannot link Claude session ID — Engram session not found', { engramSessionId });
     return;
   }
 
   // Archive the old ID if present
-  const priorRow = db.prepare('SELECT prior_claude_session_ids FROM sessions WHERE id = ?').get(claudexSessionId) as { prior_claude_session_ids: string | null } | undefined;
+  const priorRow = db.prepare('SELECT prior_claude_session_ids FROM sessions WHERE id = ?').get(engramSessionId) as { prior_claude_session_ids: string | null } | undefined;
   const priorIds = priorRow?.prior_claude_session_ids ? priorRow.prior_claude_session_ids.split(',') : [];
   if (session.claude_session_id && !priorIds.includes(session.claude_session_id)) {
     priorIds.push(session.claude_session_id);
@@ -68,9 +68,9 @@ export function linkClaudeSessionId(claudexSessionId: string, newClaudeSessionId
 
   db.prepare(`
     UPDATE sessions SET claude_session_id = ?, prior_claude_session_ids = ? WHERE id = ?
-  `).run(newClaudeSessionId, priorIds.join(',') || null, claudexSessionId);
+  `).run(newClaudeSessionId, priorIds.join(',') || null, engramSessionId);
 
-  log.info('Linked new Claude session ID', { claudexSessionId, newClaudeSessionId, priorIds });
+  log.info('Linked new Claude session ID', { engramSessionId, newClaudeSessionId, priorIds });
 }
 
 export function endSession(id: string, summary?: string, keyActions?: string[], filesModified?: string[]): void {

@@ -69,7 +69,7 @@ export function recordFalsePositive(projectId: string): void {
   recalibrate(projectId);
 }
 
-/** Record that ClauDEX showed a topic-shift suggestion to the user. */
+/** Record that Engram showed a topic-shift suggestion to the user. */
 export function recordSuggestionShown(projectId: string): void {
   const db = getDb();
   db.prepare(`

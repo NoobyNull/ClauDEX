@@ -1,8 +1,8 @@
 // ═══════════════════════════════════════════════════════════════════
-// ClauDEX Interactive Timeline — Observatory Chrono-Rail
+// Engram Interactive Timeline — Observatory Chrono-Rail
 // ═══════════════════════════════════════════════════════════════════
 
-const TL_STYLE_ID = 'claudex-timeline-styles';
+const TL_STYLE_ID = 'engram-timeline-styles';
 
 function injectTimelineStyles() {
   if (document.getElementById(TL_STYLE_ID)) return;

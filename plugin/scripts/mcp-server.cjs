@@ -2984,7 +2984,7 @@ var require_compile = __commonJS({
       const schOrFunc = root.refs[ref];
       if (schOrFunc)
         return schOrFunc;
-      let _sch = resolve2.call(this, root, ref);
+      let _sch = resolve.call(this, root, ref);
       if (_sch === void 0) {
         const schema = (_a = root.localRefs) === null || _a === void 0 ? void 0 : _a[ref];
         const { schemaId } = this.opts;
@@ -3011,7 +3011,7 @@ var require_compile = __commonJS({
     function sameSchemaEnv(s1, s2) {
       return s1.schema === s2.schema && s1.root === s2.root && s1.baseId === s2.baseId;
     }
-    function resolve2(root, ref) {
+    function resolve(root, ref) {
       let sch;
       while (typeof (sch = this.refs[ref]) == "string")
         ref = sch;
@@ -3586,7 +3586,7 @@ var require_fast_uri = __commonJS({
       }
       return uri;
     }
-    function resolve2(baseURI, relativeURI, options) {
+    function resolve(baseURI, relativeURI, options) {
       const schemelessOptions = options ? Object.assign({ scheme: "null" }, options) : { scheme: "null" };
       const resolved = resolveComponent(parse3(baseURI, schemelessOptions), parse3(relativeURI, schemelessOptions), schemelessOptions, true);
       schemelessOptions.skipEscape = true;
@@ -3813,7 +3813,7 @@ var require_fast_uri = __commonJS({
     var fastUri = {
       SCHEMES,
       normalize,
-      resolve: resolve2,
+      resolve,
       resolveComponent,
       equal,
       serialize,
@@ -6795,11 +6795,11 @@ var require_dist = __commonJS({
 
 // src/shared/config.ts
 function resolveDataDir() {
-  const envDir = process.env["CLAUDEX_DATA_DIR"];
+  const envDir = process.env["ENGRAM_DATA_DIR"];
   if (envDir) {
     return envDir.startsWith("~") ? envDir.replace("~", import_node_os.default.homedir()) : envDir;
   }
-  return import_node_path.default.join(import_node_os.default.homedir(), ".claudex");
+  return import_node_path.default.join(import_node_os.default.homedir(), ".engram");
 }
 function getConfig() {
   if (cachedConfig) return cachedConfig;
@@ -6836,7 +6836,7 @@ function ensureDataDir() {
   return config3.dataDir;
 }
 function getDbPath() {
-  return import_node_path.default.join(ensureDataDir(), "claudex.db");
+  return import_node_path.default.join(ensureDataDir(), "engram.db");
 }
 function saveConfig(updates) {
   const dataDir = resolveDataDir();
@@ -6876,7 +6876,7 @@ var init_config = __esm({
     import_node_path = __toESM(require("node:path"), 1);
     import_node_os = __toESM(require("node:os"), 1);
     DEFAULT_CONFIG = {
-      dataDir: import_node_path.default.join(import_node_os.default.homedir(), ".claudex"),
+      dataDir: import_node_path.default.join(import_node_os.default.homedir(), ".engram"),
       maxContextTokens: 2e3,
       sessionHistoryDepth: 10,
       autoCapture: true,
@@ -6928,7 +6928,7 @@ function getLogFile() {
     if (!import_node_fs2.default.existsSync(dataDir)) {
       import_node_fs2.default.mkdirSync(dataDir, { recursive: true });
     }
-    logFile = import_node_path2.default.join(dataDir, "claudex.log");
+    logFile = import_node_path2.default.join(dataDir, "engram.log");
   }
   return logFile;
 }
@@ -6944,16 +6944,10 @@ function formatMessage(level, component, message, data) {
   }
   return base;
 }
-function writeLog(formatted, toStderr = false) {
+function writeLog(formatted) {
   try {
     import_node_fs2.default.appendFileSync(getLogFile(), formatted + "\n");
   } catch {
-  }
-  if (toStderr) {
-    try {
-      process.stderr.write(formatted + "\n");
-    } catch {
-    }
   }
 }
 function createLogger(component) {
@@ -6970,12 +6964,12 @@ function createLogger(component) {
     },
     warn(message, data) {
       if (LEVELS[logLevel] <= LEVELS.warn) {
-        writeLog(formatMessage("warn", component, message, data), true);
+        writeLog(formatMessage("warn", component, message, data));
       }
     },
     error(message, data) {
       if (LEVELS[logLevel] <= LEVELS.error) {
-        writeLog(formatMessage("error", component, message, data), true);
+        writeLog(formatMessage("error", component, message, data));
       }
     }
   };
@@ -6988,7 +6982,7 @@ var init_logger = __esm({
     import_node_path2 = __toESM(require("node:path"), 1);
     init_config();
     LEVELS = { debug: 0, info: 1, warn: 2, error: 3 };
-    logLevel = process.env["CLAUDEX_LOG_LEVEL"] || "info";
+    logLevel = process.env["ENGRAM_LOG_LEVEL"] || "info";
     logFile = null;
   }
 });
@@ -7410,20 +7404,17 @@ function generateId(prefix = "sch") {
   const rand = Math.random().toString(36).substring(2, 8);
   return `${prefix}_${ts}_${rand}`;
 }
-var import_better_sqlite3, import_node_module, import_node_url, import_meta, log2, _filename, _require, dbInstance, vectorsAvailable;
+var import_better_sqlite3, import_node_module, log2, _require, dbInstance, vectorsAvailable;
 var init_database = __esm({
   "src/db/database.ts"() {
     "use strict";
     import_better_sqlite3 = __toESM(require("better-sqlite3"), 1);
     import_node_module = require("node:module");
-    import_node_url = require("node:url");
     init_config();
     init_logger();
     init_schema();
-    import_meta = {};
     log2 = createLogger("database");
-    _filename = typeof __filename !== "undefined" ? __filename : (0, import_node_url.fileURLToPath)(import_meta.url);
-    _require = (0, import_node_module.createRequire)(`file://${_filename}`);
+    _require = (0, import_node_module.createRequire)(`file://${__filename}`);
     dbInstance = null;
     vectorsAvailable = false;
   }
@@ -8917,9 +8908,9 @@ async function handleApiRequest(req, res) {
     const stats = await handleStats({});
     const dbPath = getDbPath();
     const dataDir = config3.dataDir;
-    const logPath = import_node_path3.default.join(dataDir, "claudex.log");
+    const logPath = import_node_path3.default.join(dataDir, "engram.log");
     let version3 = "unknown";
-    const pluginRoot = process.env["CLAUDEX_PLUGIN_ROOT"] || "";
+    const pluginRoot = process.env["ENGRAM_PLUGIN_ROOT"] || "";
     try {
       const marker = JSON.parse(import_node_fs4.default.readFileSync(import_node_path3.default.join(pluginRoot, ".install-marker"), "utf-8"));
       version3 = marker.version;
@@ -9121,10 +9112,10 @@ async function handleApiRequest(req, res) {
   sendError(res, "Not found", 404);
 }
 function readBody(req) {
-  return new Promise((resolve2, reject) => {
+  return new Promise((resolve, reject) => {
     const chunks = [];
     req.on("data", (chunk) => chunks.push(chunk));
-    req.on("end", () => resolve2(Buffer.concat(chunks).toString()));
+    req.on("end", () => resolve(Buffer.concat(chunks).toString()));
     req.on("error", reject);
   });
 }
@@ -9158,7 +9149,7 @@ __export(server_exports, {
   startWebServer: () => startWebServer
 });
 function serveStatic(res, urlPath) {
-  const pluginRoot = process.env["CLAUDEX_PLUGIN_ROOT"] || "";
+  const pluginRoot = process.env["ENGRAM_PLUGIN_ROOT"] || "";
   const publicDir = import_node_path4.default.join(pluginRoot, "web", "public");
   let filePath = urlPath === "/" ? "/index.html" : urlPath;
   const resolved = import_node_path4.default.resolve(publicDir, "." + filePath);
@@ -9250,11 +9241,6 @@ var init_server = __esm({
     };
   }
 });
-
-// src/mcp/stdio-server.ts
-var import_node_fs6 = require("node:fs");
-var import_node_url2 = require("node:url");
-var import_node_path5 = require("node:path");
 
 // node_modules/zod/v4/core/core.js
 var NEVER = Object.freeze({
@@ -15077,7 +15063,7 @@ var Protocol = class {
           return;
         }
         const pollInterval = task2.pollInterval ?? this._options?.defaultTaskPollInterval ?? 1e3;
-        await new Promise((resolve2) => setTimeout(resolve2, pollInterval));
+        await new Promise((resolve) => setTimeout(resolve, pollInterval));
         options?.signal?.throwIfAborted();
       }
     } catch (error2) {
@@ -15094,7 +15080,7 @@ var Protocol = class {
    */
   request(request, resultSchema, options) {
     const { relatedRequestId, resumptionToken, onresumptiontoken, task, relatedTask } = options ?? {};
-    return new Promise((resolve2, reject) => {
+    return new Promise((resolve, reject) => {
       const earlyReject = (error2) => {
         reject(error2);
       };
@@ -15172,7 +15158,7 @@ var Protocol = class {
           if (!parseResult.success) {
             reject(parseResult.error);
           } else {
-            resolve2(parseResult.data);
+            resolve(parseResult.data);
           }
         } catch (error2) {
           reject(error2);
@@ -15433,12 +15419,12 @@ var Protocol = class {
       }
     } catch {
     }
-    return new Promise((resolve2, reject) => {
+    return new Promise((resolve, reject) => {
       if (signal.aborted) {
         reject(new McpError(ErrorCode.InvalidRequest, "Request cancelled"));
         return;
       }
-      const timeoutId = setTimeout(resolve2, interval);
+      const timeoutId = setTimeout(resolve, interval);
       signal.addEventListener("abort", () => {
         clearTimeout(timeoutId);
         reject(new McpError(ErrorCode.InvalidRequest, "Request cancelled"));
@@ -16167,12 +16153,12 @@ var StdioServerTransport = class {
     this.onclose?.();
   }
   send(message) {
-    return new Promise((resolve2) => {
+    return new Promise((resolve) => {
       const json = serializeMessage(message);
       if (this._stdout.write(json)) {
-        resolve2();
+        resolve();
       } else {
-        this._stdout.once("drain", resolve2);
+        this._stdout.once("drain", resolve);
       }
     });
   }
@@ -16839,7 +16825,7 @@ async function handleResume(args) {
     context,
     observation_summary: observationSummary,
     observation_count: observations.length,
-    hint: isResumable ? `For full context, run: ${nativeResume}` : "Native resume not available \u2014 context has been injected from ClauDEX memory."
+    hint: isResumable ? `For full context, run: ${nativeResume}` : "Native resume not available \u2014 context has been injected from Engram memory."
   };
 }
 
@@ -17241,41 +17227,16 @@ function runRecovery() {
 // src/mcp/stdio-server.ts
 init_config();
 init_logger();
-var import_meta2 = {};
-function resolveVersion() {
-  if (true) return "1.0.7";
-  try {
-    const pkgPath = (0, import_node_path5.resolve)((0, import_node_path5.dirname)((0, import_node_url2.fileURLToPath)(import_meta2.url)), "../../package.json");
-    return JSON.parse((0, import_node_fs6.readFileSync)(pkgPath, "utf-8")).version;
-  } catch {
-    return "0.0.0-dev";
-  }
-}
-var version2 = resolveVersion();
+var version2 = "1.1.1";
 var log26 = createLogger("mcp:stdio");
-try {
-  getDb();
-} catch (err) {
-  log26.error("Database initialization failed", err);
-  process.exit(1);
-}
-try {
-  runRecovery();
-} catch (err) {
-  log26.error("Recovery failed", err);
-}
-var config2;
-try {
-  config2 = getConfig();
-} catch (err) {
-  log26.error("Config load failed", err);
-  process.exit(1);
-}
+getDb();
+runRecovery();
+var config2 = getConfig();
 if (config2.webUI.enabled) {
   Promise.resolve().then(() => (init_server(), server_exports)).then(({ startWebServer: startWebServer2 }) => startWebServer2(config2.webUI.port)).catch((err) => log26.warn("Failed to start web UI", err));
 }
 var server = new Server(
-  { name: "claudex", version: version2 },
+  { name: "engram", version: version2 },
   { capabilities: { tools: {} } }
 );
 server.setRequestHandler(ListToolsRequestSchema, async () => ({

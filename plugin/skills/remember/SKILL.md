@@ -1,5 +1,5 @@
 ---
-name: remember
+name: engram:remember
 description: Save something to persistent memory
 user_invocable: true
 arguments:
@@ -10,7 +10,7 @@ arguments:
 
 # /remember [content]
 
-Save a piece of knowledge to ClauDEX persistent memory.
+Save a piece of knowledge to Engram persistent memory.
 
 ## Behavior
 

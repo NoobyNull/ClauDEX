@@ -1,12 +1,12 @@
 {
   "mcpServers": {
-    "claudex": {
+    "engram": {
       "command": "node",
       "args": [
         "${CLAUDE_PLUGIN_ROOT}/scripts/mcp-server.cjs"
       ],
       "env": {
-        "CLAUDEX_PLUGIN_ROOT": "${CLAUDE_PLUGIN_ROOT}"
+        "ENGRAM_PLUGIN_ROOT": "${CLAUDE_PLUGIN_ROOT}"
       }
     }
   }

@@ -9,7 +9,7 @@ async function renderSettings(container) {
 
   container.innerHTML = `
     <h2 class="page-title">Settings</h2>
-    <p class="page-subtitle">Configure how ClauDEX captures, stores, and retrieves your memories.</p>
+    <p class="page-subtitle">Configure how Engram captures, stores, and retrieves your memories.</p>
 
     <form id="settings-form" autocomplete="off">
 
@@ -533,7 +533,7 @@ async function renderSettings(container) {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `claudex-export-${new Date().toISOString().slice(0, 10)}.json`;
+      a.download = `engram-export-${new Date().toISOString().slice(0, 10)}.json`;
       a.click();
       URL.revokeObjectURL(url);
     } catch {

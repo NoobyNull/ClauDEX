@@ -1,5 +1,5 @@
 /**
- * Embedding provider interface for ClauDEX.
+ * Embedding provider interface for Engram.
  * All embedding backends must implement this contract.
  */
 export interface EmbeddingProvider {

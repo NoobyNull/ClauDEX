@@ -1,5 +1,5 @@
 ---
-name: resolve
+name: engram:resolve
 description: Resolve a memory conflict or review pending conflicts
 user_invocable: true
 arguments:
@@ -10,7 +10,7 @@ arguments:
 
 # /resolve [action]
 
-Handle memory conflicts — when ClauDEX detects that a new observation looks similar to something already stored.
+Handle memory conflicts — when Engram detects that a new observation looks similar to something already stored.
 
 ## Behavior
 
@@ -22,8 +22,8 @@ Handle memory conflicts — when ClauDEX detects that a new observation looks si
    - Available actions
 3. Ask the user to pick an action for each conflict
 
-### When ClauDEX surfaces a conflict automatically
-ClauDEX will inject a prompt when it detects a near-duplicate. Present the user with these options:
+### When Engram surfaces a conflict automatically
+Engram will inject a prompt when it detects a near-duplicate. Present the user with these options:
 
 1. **Same thing** (`merge`) — Combine the new observation into the existing memory. The old memory gets updated with new info, the duplicate observation is removed.
 2. **Completely new** (`keep_both`) — Keep both as separate memories. They may look similar but represent different things.

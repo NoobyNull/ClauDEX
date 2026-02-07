@@ -74,8 +74,8 @@ export async function handleTopicShift(
 
     const topicLabel = result.newTopic || 'a different topic';
     const suggestion = [
-      `[ClauDEX] It looks like you may be switching to ${topicLabel}.`,
-      `Use mcp__claudex__memory_stash to save your current thread ("${active.topic || 'current topic'}") before continuing.`,
+      `[Engram] It looks like you may be switching to ${topicLabel}.`,
+      `Use mcp__engram__memory_stash to save your current thread ("${active.topic || 'current topic'}") before continuing.`,
       `(Score: ${result.score.toFixed(2)}, threshold: ${thresholds.ask_threshold.toFixed(2)}/${thresholds.trust_threshold.toFixed(2)})`,
     ].join(' ');
 

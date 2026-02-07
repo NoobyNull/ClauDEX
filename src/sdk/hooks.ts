@@ -33,7 +33,7 @@ function isDestructiveBash(input: unknown): boolean {
   return DESTRUCTIVE_PATTERNS.some(p => p.test(command));
 }
 
-export interface ClaudexHookCallbacks {
+export interface EngramHookCallbacks {
   SessionStart: Array<{
     matcher: string;
     hooks: Array<{
@@ -76,10 +76,10 @@ export interface ClaudexHookCallbacks {
 }
 
 /**
- * Create SDK hook callback mappings for all ClauDEX lifecycle events.
+ * Create SDK hook callback mappings for all Engram lifecycle events.
  * Returns an object suitable for the `hooks` SDK option.
  */
-export function createClaudexHooks(buffer?: ObservationBuffer): ClaudexHookCallbacks {
+export function createEngramHooks(buffer?: ObservationBuffer): EngramHookCallbacks {
   return {
     SessionStart: [{
       matcher: 'startup|resume',

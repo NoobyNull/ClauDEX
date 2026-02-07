@@ -1,6 +1,6 @@
 {
-  "name": "claudex",
-  "version": "1.0.7",
+  "name": "engram",
+  "version": "1.1.2",
   "description": "Persistent memory for Claude Code - automatic capture, smart search, knowledge management",
   "type": "module",
   "main": "dist/src/sdk/entry.js",
@@ -23,10 +23,10 @@
     "mcp",
     "claude-code",
     "plugin",
-    "claudex",
+    "engram",
     "sdk"
   ],
-  "author": "ClauDEX",
+  "author": "Engram",
   "license": "MIT",
   "dependencies": {
     "@anthropic-ai/claude-code": "^1.0.0",

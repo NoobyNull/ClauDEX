@@ -1,5 +1,5 @@
 ---
-name: checkpoint
+name: engram:checkpoint
 description: Create a session save point
 user_invocable: true
 arguments:
@@ -33,7 +33,7 @@ Create a save point (fork) for the current session.
 
 ## Automatic Checkpoints
 
-ClauDEX also creates checkpoints automatically before destructive Bash operations (like `rm -rf`, `git reset --hard`, etc.) when the `checkpoints.autoForkBeforeDestructive` config option is enabled.
+Engram also creates checkpoints automatically before destructive Bash operations (like `rm -rf`, `git reset --hard`, etc.) when the `checkpoints.autoForkBeforeDestructive` config option is enabled.
 
 ## Examples
 

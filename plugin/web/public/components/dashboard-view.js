@@ -1,8 +1,8 @@
 // ═══════════════════════════════════════════════════════════════════
-// ClauDEX Interactive Dashboard
+// Engram Interactive Dashboard
 // ═══════════════════════════════════════════════════════════════════
 
-const DASH_STYLE_ID = 'claudex-dashboard-styles';
+const DASH_STYLE_ID = 'engram-dashboard-styles';
 
 function injectDashboardStyles() {
   if (document.getElementById(DASH_STYLE_ID)) return;

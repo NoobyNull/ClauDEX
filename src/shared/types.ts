@@ -157,7 +157,7 @@ export interface SearchOptions {
   limit?: number;
 }
 
-export interface ClaudexConfig {
+export interface EngramConfig {
   dataDir: string;
   maxContextTokens: number;
   sessionHistoryDepth: number;
@@ -310,8 +310,8 @@ export interface ConflictInfo {
   resolution: 'merge' | 'keep_both' | 'replace' | 'skip' | null;
 }
 
-/** Options returned by initClaudex() for the Claude Code SDK. */
-export interface ClaudexSdkOptions {
+/** Options returned by initEngram() for the Claude Code SDK. */
+export interface EngramSdkOptions {
   mcpServers: Record<string, unknown>;
   hooks: Record<string, unknown>;
   systemPrompt: string;

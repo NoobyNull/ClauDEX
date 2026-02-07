@@ -1,5 +1,5 @@
 ---
-name: forget
+name: engram:forget
 description: Delete something from persistent memory
 user_invocable: true
 arguments:
@@ -10,7 +10,7 @@ arguments:
 
 # /forget [what]
 
-Delete memories from ClauDEX persistent storage.
+Delete memories from Engram persistent storage.
 
 ## Behavior
 

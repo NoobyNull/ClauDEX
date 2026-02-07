@@ -1,4 +1,4 @@
-# ClauDEX — Complete Capabilities Reference
+# Engram — Complete Capabilities Reference
 
 > **Persistent Memory for Claude Code** — SDK-native plugin that gives Claude long-term memory across sessions, projects, and conversations.
 
@@ -77,7 +77,7 @@
 ┌─────────────────────────────────────────────────────────────────┐
 │                        Claude Code SDK                          │
 │                                                                 │
-│  initClaudex(cwd) → { mcpServers, hooks, systemPrompt }        │
+│  initEngram(cwd) → { mcpServers, hooks, systemPrompt }        │
 │                                                                 │
 ├──────────┬──────────┬───────────────────────┬───────────────────┤
 │  Hooks   │   MCP    │   Observation Buffer  │  System Prompt    │
@@ -353,7 +353,7 @@ Create a session save point. Captures observation count, conversation IDs, and l
 /resolve skip            ← Discard the new memory
 ```
 
-Handle memory conflicts — when ClauDEX detects that a new observation is similar to something already stored.
+Handle memory conflicts — when Engram detects that a new observation is similar to something already stored.
 
 ---
 
@@ -1031,16 +1031,16 @@ All endpoints are served from `http://127.0.0.1:37820/api/`.
 ### File Location
 
 ```
-~/.claudex/settings.json
+~/.engram/settings.json
 ```
 
-Override data directory with environment variable: `CLAUDEX_DATA_DIR`
+Override data directory with environment variable: `ENGRAM_DATA_DIR`
 
 ### Full Default Configuration
 
 ```json
 {
-  "dataDir": "~/.claudex",
+  "dataDir": "~/.engram",
   "maxContextTokens": 2000,
   "sessionHistoryDepth": 10,
   "autoCapture": true,
@@ -1141,7 +1141,7 @@ Override data directory with environment variable: `CLAUDEX_DATA_DIR`
 
 ```typescript
 // src/sdk/entry.ts
-export async function initClaudex(cwd: string): Promise<ClaudexSdkOptions>
+export async function initEngram(cwd: string): Promise<EngramSdkOptions>
 ```
 
 Returns:
@@ -1162,12 +1162,12 @@ Returns:
 
 ```json
 {
-  "name": "claudex",
+  "name": "engram",
   "version": "2.0.0",
   "description": "Persistent memory for Claude Code — SDK-native plugin",
   "sdk": {
     "entry": "dist/src/sdk/entry.js",
-    "init": "initClaudex"
+    "init": "initEngram"
   }
 }
 ```

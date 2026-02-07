@@ -1,24 +1,24 @@
 import { getDb, closeDb } from '../db/database.js';
 import { getConfig } from '../shared/config.js';
 import { createLogger } from '../shared/logger.js';
-import { createClaudexHooks } from './hooks.js';
-import { getClaudexTools } from './mcp-server.js';
+import { createEngramHooks } from './hooks.js';
+import { getEngramTools } from './mcp-server.js';
 import { ObservationBuffer } from './observation-buffer.js';
 import { buildSystemPromptContext } from './system-prompt.js';
 import { detectAndRegisterProject } from '../projects/detector.js';
 import { runRecovery } from '../recovery/restore.js';
-import type { ClaudexSdkOptions } from '../shared/types.js';
+import type { EngramSdkOptions } from '../shared/types.js';
 
 const log = createLogger('sdk:entry');
 
 /**
- * Single entry point for ClauDEX as a Claude Code SDK plugin.
+ * Single entry point for Engram as a Claude Code SDK plugin.
  *
  * Initializes the database, starts the web UI, and returns the combined
  * SDK options: MCP tools, hooks, and system prompt context.
  */
-export async function initClaudex(cwd: string): Promise<ClaudexSdkOptions> {
-  log.info('Initializing ClauDEX', { cwd });
+export async function initEngram(cwd: string): Promise<EngramSdkOptions> {
+  log.info('Initializing Engram', { cwd });
 
   // Initialize database
   getDb();
@@ -39,10 +39,10 @@ export async function initClaudex(cwd: string): Promise<ClaudexSdkOptions> {
   const systemPrompt = buildSystemPromptContext(project);
 
   // Get MCP tools
-  const tools = getClaudexTools();
+  const tools = getEngramTools();
 
   // Create hooks with buffer
-  const hooks = createClaudexHooks(buffer);
+  const hooks = createEngramHooks(buffer);
 
   // Start web UI if enabled
   if (config.webUI.enabled) {
@@ -65,7 +65,7 @@ export async function initClaudex(cwd: string): Promise<ClaudexSdkOptions> {
   process.on('SIGINT', cleanup);
   process.on('SIGTERM', cleanup);
 
-  log.info('ClauDEX initialized', {
+  log.info('Engram initialized', {
     project: project.name,
     tools: tools.length,
     hooks: Object.keys(hooks).length,
@@ -73,7 +73,7 @@ export async function initClaudex(cwd: string): Promise<ClaudexSdkOptions> {
 
   return {
     mcpServers: {
-      claudex: {
+      engram: {
         tools: tools.map(t => ({
           name: t.name,
           description: t.description,

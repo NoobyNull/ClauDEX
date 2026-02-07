@@ -1,4 +1,4 @@
-// ClauDEX - Frontend SPA
+// Engram - Frontend SPA
 
 const app = document.getElementById('app');
 const navLinks = document.querySelectorAll('.nav-link');
@@ -105,12 +105,12 @@ setInterval(refreshSessionPicker, 15000);
 
 // ── Theme toggle ────────────────────────────────────────────────
 const themeToggle = document.getElementById('theme-toggle');
-let theme = localStorage.getItem('claudex-theme') || 'dark';
+let theme = localStorage.getItem('engram-theme') || 'dark';
 document.documentElement.setAttribute('data-theme', theme === 'light' ? 'light' : '');
 
 themeToggle.addEventListener('click', () => {
   theme = theme === 'dark' ? 'light' : 'dark';
-  localStorage.setItem('claudex-theme', theme);
+  localStorage.setItem('engram-theme', theme);
   document.documentElement.setAttribute('data-theme', theme === 'light' ? 'light' : '');
 });
 

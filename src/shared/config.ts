@@ -1,10 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
-import type { ClaudexConfig } from './types.js';
+import type { EngramConfig } from './types.js';
 
-const DEFAULT_CONFIG: ClaudexConfig = {
-  dataDir: path.join(os.homedir(), '.claudex'),
+const DEFAULT_CONFIG: EngramConfig = {
+  dataDir: path.join(os.homedir(), '.engram'),
   maxContextTokens: 2000,
   sessionHistoryDepth: 10,
   autoCapture: true,
@@ -46,23 +46,23 @@ const DEFAULT_CONFIG: ClaudexConfig = {
   },
 };
 
-let cachedConfig: ClaudexConfig | null = null;
+let cachedConfig: EngramConfig | null = null;
 
 export function resolveDataDir(): string {
-  const envDir = process.env['CLAUDEX_DATA_DIR'];
+  const envDir = process.env['ENGRAM_DATA_DIR'];
   if (envDir) {
     return envDir.startsWith('~') ? envDir.replace('~', os.homedir()) : envDir;
   }
-  return path.join(os.homedir(), '.claudex');
+  return path.join(os.homedir(), '.engram');
 }
 
-export function getConfig(): ClaudexConfig {
+export function getConfig(): EngramConfig {
   if (cachedConfig) return cachedConfig;
 
   const dataDir = resolveDataDir();
   const settingsPath = path.join(dataDir, 'settings.json');
 
-  let userConfig: Partial<ClaudexConfig> = {};
+  let userConfig: Partial<EngramConfig> = {};
   try {
     if (fs.existsSync(settingsPath)) {
       userConfig = JSON.parse(fs.readFileSync(settingsPath, 'utf-8'));
@@ -98,7 +98,7 @@ export function ensureDataDir(): string {
 }
 
 export function getDbPath(): string {
-  return path.join(ensureDataDir(), 'claudex.db');
+  return path.join(ensureDataDir(), 'engram.db');
 }
 
 export function isPrivacyExcluded(filePath: string): boolean {
@@ -109,12 +109,12 @@ export function isPrivacyExcluded(filePath: string): boolean {
   );
 }
 
-export function saveConfig(updates: Partial<ClaudexConfig>): ClaudexConfig {
+export function saveConfig(updates: Partial<EngramConfig>): EngramConfig {
   const dataDir = resolveDataDir();
   const settingsPath = path.join(dataDir, 'settings.json');
 
   // Read existing file-level overrides (not merged defaults)
-  let existing: Partial<ClaudexConfig> = {};
+  let existing: Partial<EngramConfig> = {};
   try {
     if (fs.existsSync(settingsPath)) {
       existing = JSON.parse(fs.readFileSync(settingsPath, 'utf-8'));
@@ -122,7 +122,7 @@ export function saveConfig(updates: Partial<ClaudexConfig>): ClaudexConfig {
   } catch { /* start fresh */ }
 
   // Deep-merge nested objects
-  const merged: Partial<ClaudexConfig> = { ...existing };
+  const merged: Partial<EngramConfig> = { ...existing };
   if (updates.maxContextTokens !== undefined) merged.maxContextTokens = updates.maxContextTokens;
   if (updates.sessionHistoryDepth !== undefined) merged.sessionHistoryDepth = updates.sessionHistoryDepth;
   if (updates.autoCapture !== undefined) merged.autoCapture = updates.autoCapture;

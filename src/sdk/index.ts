@@ -1,6 +1,6 @@
-export { initClaudex } from './entry.js';
-export { createClaudexMcpServer, getClaudexTools } from './mcp-server.js';
-export { createClaudexHooks } from './hooks.js';
+export { initEngram } from './entry.js';
+export { createEngramMcpServer, getEngramTools } from './mcp-server.js';
+export { createEngramHooks } from './hooks.js';
 export { buildSystemPromptContext } from './system-prompt.js';
 export { ObservationBuffer } from './observation-buffer.js';
 export { createCheckpoint, listCheckpoints, getCheckpoint } from './checkpoint.js';

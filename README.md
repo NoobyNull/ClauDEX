@@ -1,8 +1,8 @@
-# ClauDEX
+# Engram
 
 **Persistent memory for Claude Code.** Automatic observation capture, knowledge management, hybrid search, conversation stashing, and a knowledge graph — all running as a native Claude Code plugin.
 
-Claude Code forgets everything when a session ends. ClauDEX fixes that.
+Claude Code forgets everything when a session ends. Engram fixes that.
 
 ---
 
@@ -14,11 +14,11 @@ On top of that, you can explicitly save **knowledge** — decisions, preferences
 
 ```
 You: /remember  Always use pnpm in this project, not npm
-ClauDEX: Saved as preference, tagged [tooling, package-manager]
+Engram: Saved as preference, tagged [tooling, package-manager]
 
 --- 3 weeks later, new session ---
 
-Claude: [ClauDEX Memory] Preference: Always use pnpm in this project, not npm
+Claude: [Engram Memory] Preference: Always use pnpm in this project, not npm
 ```
 
 ## Features
@@ -47,7 +47,7 @@ Claude: [ClauDEX Memory] Preference: Always use pnpm in this project, not npm
 
 **Topic shift detection** — Adaptive heuristics detect when you've changed topics mid-session and suggest stashing the previous conversation thread so you can resume it later.
 
-**Conflict detection** — When a new observation is near-duplicate of existing memory, ClauDEX flags it for resolution instead of blindly saving duplicates.
+**Conflict detection** — When a new observation is near-duplicate of existing memory, Engram flags it for resolution instead of blindly saving duplicates.
 
 **Session-aware concurrency** — Multiple Claude sessions can run simultaneously against the same database. Each session is identified by its Claude session ID, not by guessing, so observations never cross-contaminate.
 
@@ -85,26 +85,26 @@ Claude: [ClauDEX Memory] Preference: Always use pnpm in this project, not npm
 ## Setup
 
 ```bash
-git clone https://github.com/NoobyNull/ClauDEX.git
+git clone https://github.com/NoobyNull/Engram.git
 ```
 
-Then start Claude Code inside the cloned directory. ClauDEX ships pre-built — the Setup hook will automatically install native dependencies on first launch.
+Then start Claude Code inside the cloned directory. Engram ships pre-built — the Setup hook will automatically install native dependencies on first launch.
 
-For development (modifying ClauDEX source):
+For development (modifying Engram source):
 
 ```bash
-cd ClauDEX
+cd Engram
 npm install
 node setup.js
 ```
 
-The database lives at `~/.claudex/claudex.db`. Override with `CLAUDEX_DATA_DIR` env var.
+The database lives at `~/.engram/engram.db`. Override with `ENGRAM_DATA_DIR` env var.
 
 ## Uninstall
 
 ```bash
 ./teardown.sh           # Remove plugin registration + build artifacts
-./teardown.sh --purge   # Also delete ~/.claudex (database + all saved memories)
+./teardown.sh --purge   # Also delete ~/.engram (database + all saved memories)
 ```
 
 ## Requirements
@@ -123,7 +123,7 @@ The database lives at `~/.claudex/claudex.db`. Override with `CLAUDEX_DATA_DIR` 
 
 ## Configuration
 
-Settings are stored in `~/.claudex/settings.json`. Defaults:
+Settings are stored in `~/.engram/settings.json`. Defaults:
 
 ```json
 {

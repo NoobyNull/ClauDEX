@@ -17227,7 +17227,7 @@ function runRecovery() {
 // src/mcp/stdio-server.ts
 init_config();
 init_logger();
-var version2 = "1.0.6";
+var version2 = "1.1.1";
 var log26 = createLogger("mcp:stdio");
 getDb();
 runRecovery();

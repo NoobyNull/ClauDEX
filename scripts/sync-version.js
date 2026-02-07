@@ -30,6 +30,18 @@ if (fs.existsSync(pluginPath)) {
   }
 }
 
+// ── plugin/package.json ─────────────────────────────────────────
+const pluginPkgPath = path.join(root, 'plugin', 'package.json');
+if (fs.existsSync(pluginPkgPath)) {
+  const pluginPkg = JSON.parse(fs.readFileSync(pluginPkgPath, 'utf-8'));
+  if (pluginPkg.version !== version) {
+    pluginPkg.version = version;
+    fs.writeFileSync(pluginPkgPath, JSON.stringify(pluginPkg, null, 2) + '\n');
+    console.log(`  plugin/package.json         ${pluginPkg.version} → ${version}`);
+    changed++;
+  }
+}
+
 // ── package.json (only if override arg was given) ───────────────
 if (process.argv[2] && pkg.version !== version) {
   pkg.version = version;

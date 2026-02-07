@@ -187,7 +187,8 @@ function applyCurationResult(
 
 async function tryImportSdk(): Promise<{ query: (opts: Record<string, unknown>) => Promise<{ text: string }> } | null> {
   try {
-    const mod = await import('@anthropic-ai/claude-code');
+    const moduleName = '@anthropic-ai/claude-code';
+    const mod = await import(/* webpackIgnore: true */ moduleName);
     if (mod && typeof mod.query === 'function') {
       return mod as unknown as { query: (opts: Record<string, unknown>) => Promise<{ text: string }> };
     }

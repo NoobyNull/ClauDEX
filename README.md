@@ -100,6 +100,37 @@ node setup.js
 
 The database lives at `~/.engram/engram.db`. Override with `ENGRAM_DATA_DIR` env var.
 
+## Development & Release
+
+**Building:**
+```bash
+npm run build       # Compile TypeScript to dist/
+npm run dev         # Watch mode for development
+```
+
+**Version bumping & GitHub release:**
+
+Engram includes automated version management that syncs versions across all package files and publishes to GitHub:
+
+```bash
+npm run release        # Build, bump patch version (1.1.2 → 1.1.3), commit, tag, push
+npm run release:minor  # Bump minor version (1.1.2 → 1.2.0)
+npm run release:major  # Bump major version (1.1.2 → 2.0.0)
+```
+
+This will:
+1. Build the project
+2. Bump the version in `package.json`, `plugin/package.json`, and `.claude-plugin/plugin.json`
+3. Commit all changes
+4. Create a git tag (e.g., `v1.1.3`)
+5. Push commit and tag to GitHub
+
+**Manual version sync** (if needed):
+```bash
+npm run version:sync     # Sync current version across all files
+npm run version:sync 1.5.0  # Set specific version everywhere
+```
+
 ## Uninstall
 
 ```bash

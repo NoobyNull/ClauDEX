@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "claudex",
-      "source": ".",
+      "source": "./plugin",
       "description": "Persistent memory for Claude Code — captures observations, saves knowledge, enables search across sessions.",
       "version": "1.0.0",
       "author": {

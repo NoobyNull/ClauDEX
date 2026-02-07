@@ -15,15 +15,14 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
-import { createRequire } from 'node:module';
 import { toolDefinitions, handleToolCall } from './index.js';
 import { getDb } from '../db/database.js';
 import { runRecovery } from '../recovery/restore.js';
 import { getConfig } from '../shared/config.js';
 import { createLogger } from '../shared/logger.js';
 
-const require = createRequire(import.meta.url);
-const { version } = require('../../../package.json');
+declare const __CLAUDEX_VERSION__: string;
+const version = __CLAUDEX_VERSION__;
 
 const log = createLogger('mcp:stdio');
 

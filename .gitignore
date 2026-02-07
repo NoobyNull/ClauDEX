@@ -1,3 +1,6 @@
 node_modules/
+dist/
+plugin/node_modules/
+plugin/.install-marker
 *.local.md
 .env

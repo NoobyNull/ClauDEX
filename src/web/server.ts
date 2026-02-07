@@ -1,12 +1,10 @@
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { handleApiRequest } from './routes.js';
 import { createLogger } from '../shared/logger.js';
 
 const log = createLogger('web:server');
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const MIME_TYPES: Record<string, string> = {
   '.html': 'text/html',
@@ -19,13 +17,8 @@ const MIME_TYPES: Record<string, string> = {
 };
 
 function serveStatic(res: http.ServerResponse, urlPath: string): void {
-  // Resolve public dir — works both in src (dev) and dist (compiled).
-  // At runtime __dirname is dist/src/web/, so walk up to project root and into src/web/public/
-  let publicDir = path.join(__dirname, 'public');
-  if (!fs.existsSync(publicDir)) {
-    // Compiled: dist/src/web/ → go up 3 levels to project root, then into src/web/public/
-    publicDir = path.join(__dirname, '..', '..', '..', 'src', 'web', 'public');
-  }
+  const pluginRoot = process.env['CLAUDEX_PLUGIN_ROOT'] || '';
+  const publicDir = path.join(pluginRoot, 'web', 'public');
   let filePath = urlPath === '/' ? '/index.html' : urlPath;
 
   // Security: prevent path traversal

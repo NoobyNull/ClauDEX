@@ -5,14 +5,17 @@ import { createLogger } from '../shared/logger.js';
 import { initializeSchema, initializeVectorTable } from './schema.js';
 
 const log = createLogger('database');
-const require = createRequire(import.meta.url);
+
+// In esbuild CJS output, __filename is available natively.
+declare const __filename: string;
+const _require = createRequire(`file://${__filename}`);
 
 let dbInstance: Database.Database | null = null;
 let vectorsAvailable = false;
 
 function loadSqliteVec(db: Database.Database): void {
   try {
-    const sqliteVec = require('sqlite-vec');
+    const sqliteVec = _require('sqlite-vec');
     sqliteVec.load(db);
     log.info('sqlite-vec extension loaded');
   } catch {

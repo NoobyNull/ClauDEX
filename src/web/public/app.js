@@ -145,6 +145,9 @@ async function navigate() {
     case 'knowledge':
       renderKnowledge(app);
       break;
+    case 'logs':
+      renderLogsView(app);
+      break;
     case 'settings':
       renderSettings(app);
       break;

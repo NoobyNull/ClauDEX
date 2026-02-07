@@ -17286,7 +17286,7 @@ init_config();
 init_logger();
 var import_meta2 = {};
 function resolveVersion() {
-  if (true) return "1.1.5";
+  if (true) return "1.1.6";
   try {
     const pkgPath = (0, import_node_path5.resolve)((0, import_node_path5.dirname)((0, import_node_url2.fileURLToPath)(import_meta2.url)), "../../package.json");
     return JSON.parse((0, import_node_fs6.readFileSync)(pkgPath, "utf-8")).version;

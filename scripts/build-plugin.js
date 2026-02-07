@@ -230,10 +230,11 @@ try {
   info('Compiling native modules (better-sqlite3, sqlite-vec, fastembed)...');
   info('This may take a minute - please wait...\\n');
 
-  execSync('npm install --production --loglevel=error', {
+  execSync('npm install --production --prefer-offline --no-audit --no-fund --loglevel=error', {
     cwd: PLUGIN_ROOT,
     stdio: ['pipe', 'pipe', 'inherit'],
     timeout: 120000,
+    env: { ...process.env, MAKEFLAGS: '-j4' },
   });
 
   console.error('');

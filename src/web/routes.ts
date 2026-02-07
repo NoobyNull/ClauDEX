@@ -411,6 +411,51 @@ export async function handleApiRequest(req: IncomingMessage, res: ServerResponse
     return;
   }
 
+  // GET /api/health — health check endpoint
+  if (method === 'GET' && pathname === '/api/health') {
+    sendJson(res, {
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      version: '1.1.5',
+      database: getDbPath(),
+      features: {
+        vectorSearch: isVectorsAvailable(),
+        webUI: true,
+      },
+    });
+    return;
+  }
+
+  // GET /api/logs — stream recent log entries
+  if (method === 'GET' && pathname === '/api/logs') {
+    try {
+      const logDir = path.join(path.dirname(getDbPath()), 'logs');
+      const logFile = path.join(logDir, 'engram.log');
+
+      if (fs.existsSync(logFile)) {
+        const logContent = fs.readFileSync(logFile, 'utf-8');
+        const lines = logContent.split('\n').filter(l => l.trim()).slice(-500); // Last 500 lines
+
+        sendJson(res, {
+          logs: lines.map(line => {
+            try {
+              return JSON.parse(line);
+            } catch {
+              return { message: line, level: 'info', timestamp: new Date().toISOString() };
+            }
+          }),
+          count: lines.length,
+        });
+      } else {
+        sendJson(res, { logs: [], count: 0, message: 'No log file found' });
+      }
+    } catch (err) {
+      log.error('Failed to read logs', err);
+      sendError(res, 'Failed to read logs', 500);
+    }
+    return;
+  }
+
   sendError(res, 'Not found', 404);
 }
 

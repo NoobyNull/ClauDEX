@@ -9122,6 +9122,45 @@ async function handleApiRequest(req, res) {
     }
     return;
   }
+  if (method === "GET" && pathname === "/api/health") {
+    sendJson(res, {
+      status: "ok",
+      timestamp: (/* @__PURE__ */ new Date()).toISOString(),
+      version: "1.1.5",
+      database: getDbPath(),
+      features: {
+        vectorSearch: isVectorsAvailable(),
+        webUI: true
+      }
+    });
+    return;
+  }
+  if (method === "GET" && pathname === "/api/logs") {
+    try {
+      const logDir = import_node_path3.default.join(import_node_path3.default.dirname(getDbPath()), "logs");
+      const logFile2 = import_node_path3.default.join(logDir, "engram.log");
+      if (import_node_fs4.default.existsSync(logFile2)) {
+        const logContent = import_node_fs4.default.readFileSync(logFile2, "utf-8");
+        const lines = logContent.split("\n").filter((l) => l.trim()).slice(-500);
+        sendJson(res, {
+          logs: lines.map((line) => {
+            try {
+              return JSON.parse(line);
+            } catch {
+              return { message: line, level: "info", timestamp: (/* @__PURE__ */ new Date()).toISOString() };
+            }
+          }),
+          count: lines.length
+        });
+      } else {
+        sendJson(res, { logs: [], count: 0, message: "No log file found" });
+      }
+    } catch (err) {
+      log24.error("Failed to read logs", err);
+      sendError(res, "Failed to read logs", 500);
+    }
+    return;
+  }
   sendError(res, "Not found", 404);
 }
 function readBody(req) {

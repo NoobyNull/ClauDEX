@@ -45,6 +45,7 @@ function serveStatic(res: http.ServerResponse, urlPath: string): void {
 }
 
 export function startWebServer(port: number): void {
+  log.debug('Starting web server initialization', { port });
   // Probe the port first — if another Engram instance already owns
   // the web UI, skip silently so we don't spam error logs.
   const probe = http.createServer();
@@ -56,9 +57,11 @@ export function startWebServer(port: number): void {
     }
   });
   probe.once('listening', () => {
+    log.debug('Port probe successful, starting real server');
     // Port is free — close the probe and start the real server.
     probe.close(() => startRealServer(port));
   });
+  log.debug('Probing port availability', { port, host: '127.0.0.1' });
   probe.listen(port, '127.0.0.1');
 }
 

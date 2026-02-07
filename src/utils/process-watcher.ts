@@ -88,7 +88,9 @@ export function startProcessWatcher(onShutdown: () => void): void {
   });
 
   watcherInterval = setInterval(async () => {
+    log.debug('Checking Claude Code process status...');
     const running = await isClaudeProcessRunning();
+    log.debug('Claude Code process check result', { running, wasRunning: isClaudeRunning });
 
     if (running && !isClaudeRunning) {
       // Claude came back online, cancel shutdown
@@ -113,6 +115,10 @@ export function startProcessWatcher(onShutdown: () => void): void {
           process.exit(0);
         }, SHUTDOWN_DELAY);
       }
+    } else if (running) {
+      log.debug('Claude Code is running normally');
+    } else {
+      log.debug('Claude Code still not detected, shutdown timer active');
     }
   }, CHECK_INTERVAL);
 

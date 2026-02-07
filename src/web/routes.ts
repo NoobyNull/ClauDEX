@@ -429,8 +429,8 @@ export async function handleApiRequest(req: IncomingMessage, res: ServerResponse
   // GET /api/logs — stream recent log entries
   if (method === 'GET' && pathname === '/api/logs') {
     try {
-      const logDir = path.join(path.dirname(getDbPath()), 'logs');
-      const logFile = path.join(logDir, 'engram.log');
+      const config = getConfig();
+      const logFile = path.join(config.dataDir, 'engram.log');
 
       if (fs.existsSync(logFile)) {
         const logContent = fs.readFileSync(logFile, 'utf-8');
@@ -447,7 +447,7 @@ export async function handleApiRequest(req: IncomingMessage, res: ServerResponse
           count: lines.length,
         });
       } else {
-        sendJson(res, { logs: [], count: 0, message: 'No log file found' });
+        sendJson(res, { logs: [], count: 0, message: 'No log file found at: ' + logFile });
       }
     } catch (err) {
       log.error('Failed to read logs', err);

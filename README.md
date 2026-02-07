@@ -101,6 +101,13 @@ Or manually: point your Claude Code plugin directory at the repo and ensure `.cl
 
 The database lives at `~/.claudex/claudex.db`. Override with `CLAUDEX_DATA_DIR` env var.
 
+## Uninstall
+
+```bash
+./teardown.sh           # Remove plugin registration + build artifacts
+./teardown.sh --purge   # Also delete ~/.claudex (database + all saved memories)
+```
+
 ## Requirements
 
 - Node.js >= 20

@@ -1,6 +1,6 @@
 {
   "name": "engram",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "description": "Persistent memory for Claude Code - automatic capture, smart search, knowledge management",
   "type": "module",
   "main": "dist/src/sdk/entry.js",
@@ -14,6 +14,7 @@
     "dev": "tsc --watch",
     "clean": "rm -rf dist plugin",
     "build:plugin": "node scripts/build-plugin.js",
+    "prebuild": "node scripts/prebuild-binaries.cjs",
     "version:sync": "node scripts/sync-version.js",
     "postversion": "node scripts/sync-version.js",
     "release": "npm run build && node scripts/version-and-release.js",

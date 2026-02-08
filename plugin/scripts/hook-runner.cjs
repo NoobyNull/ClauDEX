@@ -205,7 +205,7 @@ var init_logger = __esm({
     import_node_path2 = __toESM(require("node:path"), 1);
     init_config();
     LEVELS = { debug: 0, info: 1, warn: 2, error: 3 };
-    logLevel = process.env["ENGRAM_LOG_LEVEL"] || "info";
+    logLevel = process.env["ENGRAM_LOG_LEVEL"] || "debug";
     logFile = null;
   }
 });

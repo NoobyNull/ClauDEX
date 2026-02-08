@@ -6988,7 +6988,7 @@ var init_logger = __esm({
     import_node_path2 = __toESM(require("node:path"), 1);
     init_config();
     LEVELS = { debug: 0, info: 1, warn: 2, error: 3 };
-    logLevel = process.env["ENGRAM_LOG_LEVEL"] || "info";
+    logLevel = process.env["ENGRAM_LOG_LEVEL"] || "debug";
     logFile = null;
   }
 });
@@ -9137,8 +9137,8 @@ async function handleApiRequest(req, res) {
   }
   if (method === "GET" && pathname === "/api/logs") {
     try {
-      const logDir = import_node_path3.default.join(import_node_path3.default.dirname(getDbPath()), "logs");
-      const logFile2 = import_node_path3.default.join(logDir, "engram.log");
+      const config3 = getConfig();
+      const logFile2 = import_node_path3.default.join(config3.dataDir, "engram.log");
       if (import_node_fs4.default.existsSync(logFile2)) {
         const logContent = import_node_fs4.default.readFileSync(logFile2, "utf-8");
         const lines = logContent.split("\n").filter((l) => l.trim()).slice(-500);
@@ -9153,7 +9153,7 @@ async function handleApiRequest(req, res) {
           count: lines.length
         });
       } else {
-        sendJson(res, { logs: [], count: 0, message: "No log file found" });
+        sendJson(res, { logs: [], count: 0, message: "No log file found at: " + logFile2 });
       }
     } catch (err) {
       log24.error("Failed to read logs", err);
@@ -9225,6 +9225,7 @@ function serveStatic(res, urlPath) {
   }
 }
 function startWebServer(port) {
+  log25.debug("Starting web server initialization", { port });
   const probe = import_node_http.default.createServer();
   probe.once("error", (err) => {
     if (err.code === "EADDRINUSE") {
@@ -9234,8 +9235,10 @@ function startWebServer(port) {
     }
   });
   probe.once("listening", () => {
+    log25.debug("Port probe successful, starting real server");
     probe.close(() => startRealServer(port));
   });
+  log25.debug("Probing port availability", { port, host: "127.0.0.1" });
   probe.listen(port, "127.0.0.1");
 }
 function startRealServer(port) {
@@ -17286,7 +17289,7 @@ init_config();
 init_logger();
 var import_meta2 = {};
 function resolveVersion() {
-  if (true) return "1.1.7";
+  if (true) return "1.1.10";
   try {
     const pkgPath = (0, import_node_path5.resolve)((0, import_node_path5.dirname)((0, import_node_url2.fileURLToPath)(import_meta2.url)), "../../package.json");
     return JSON.parse((0, import_node_fs6.readFileSync)(pkgPath, "utf-8")).version;

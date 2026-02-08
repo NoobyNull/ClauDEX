@@ -162,6 +162,12 @@ fs.writeFileSync(
   JSON.stringify(pluginJson, null, 2) + '\n',
 );
 
+// Also write plugin.json to plugin root (required for Claude Code)
+fs.writeFileSync(
+  path.join(OUT, 'plugin.json'),
+  JSON.stringify(pluginJson, null, 2) + '\n',
+);
+
 // ── Generate package.json (native deps only) ─────────────────────
 console.log('▸ Generating package.json...');
 const pluginPkg = {
